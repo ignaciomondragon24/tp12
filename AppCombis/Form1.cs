@@ -1,70 +1,48 @@
 namespace AppCombis
 {
-    /// <summary>
-    /// Formulario principal para gestionar el Servicio de Combis MEJORADO
-    /// Incluye: Tipos de pasajero, temporizador, estadísticas y reportes
-    /// </summary>
+    // Sistema de Combis - TP 12
+    // Maneja la fila de espera de pasajeros y viajes de la combi
     public partial class Form1 : Form
     {
         // ============================================
-        // DECLARACIONES INICIALES
+        // VARIABLES GLOBALES
         // ============================================
 
-        /// <summary>
-        /// Cola dinámica para gestionar la fila de espera de pasajeros
-        /// Usa Queue<Pasajero> - Estructura dinámica que crece según la necesidad
-        /// </summary>
+        // Cola para la fila de pasajeros (FIFO - el primero que llega es el primero que sube)
         private Queue<Pasajero> filaDeEspera = new Queue<Pasajero>();
 
-        /// <summary>
-        /// Lista dinámica de pasajeros que están en la combi actualmente
-        /// Usa List<Pasajero> - Estructura dinámica para gestionar viaje actual
-        /// </summary>
+        // Lista de pasajeros que están en la combi en este momento
         private List<Pasajero> pasajerosEnCombi = new List<Pasajero>();
 
-        /// <summary>
-        /// Estadísticas del día
-        /// </summary>
+        // Para llevar las estadísticas del día
         private EstadisticasDiarias estadisticas = new EstadisticasDiarias();
 
-        /// <summary>
-        /// Capacidad máxima de la combi (19 lugares disponibles)
-        /// </summary>
+        // La combi tiene 19 lugares
         private const int CAPACIDAD_COMBI = 19;
 
-        /// <summary>
-        /// Tiempo de espera en segundos (20 minutos = 1200 segundos)
-        /// </summary>
-        private const int TIEMPO_ESPERA_SEGUNDOS = 1200; // 20 minutos
+        // Tiempo de espera: 20 minutos = 1200 segundos
+        private const int TIEMPO_ESPERA_SEGUNDOS = 1200;
 
-        /// <summary>
-        /// Tiempo restante en segundos
-        /// </summary>
+        // Cuántos segundos quedan en el temporizador
         private int tiempoRestanteSegundos = TIEMPO_ESPERA_SEGUNDOS;
 
-        /// <summary>
-        /// Indica si la combi está en proceso de llenado
-        /// </summary>
+        // Si la combi está esperando para salir
         private bool combiEnEspera = false;
 
-        /// <summary>
-        /// Archivos de persistencia
-        /// </summary>
+        // Nombres de los archivos donde guardo los datos
         private const string ARCHIVO_FILA = "fila_espera.txt";
         private const string ARCHIVO_ESTADISTICAS = "estadisticas.txt";
 
-        /// <summary>
-        /// Rutas de recorrido disponibles
-        /// </summary>
+        // Las 3 rutas que puede tomar la combi
         private enum RutaRecorrido
         {
-            ObeliscoPuertoMadero,    // Ruta 1: Obelisco ? Puerto Madero
-            ObeliscoRecoleta,        // Ruta 2: Obelisco ? Recoleta
-            ObeliscoPalermo          // Ruta 3: Obelisco ? Palermo
+            ObeliscoPuertoMadero,    // Ruta 1: 20 minutos
+            ObeliscoRecoleta,        // Ruta 2: 25 minutos
+            ObeliscoPalermo          // Ruta 3: 30 minutos
         }
 
         // ============================================
-        // CONSTRUCTOR
+        // CUANDO SE CARGA EL FORMULARIO
         // ============================================
 
         public Form1()
@@ -72,51 +50,39 @@ namespace AppCombis
             InitializeComponent();
         }
 
-        // ============================================
-        // EVENTOS DEL FORMULARIO
-        // ============================================
-
-        /// <summary>
-        /// Evento que se ejecuta al cargar el formulario
-        /// Inicializa todos los componentes y carga datos guardados
-        /// </summary>
+        // Esto se ejecuta cuando arranca el programa
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Inicializar ComboBox de tipos de pasajero
+            // Cargo los tipos de pasajero en el combo
             InicializarTiposPasajero();
 
-            // Cargar datos persistidos
+            // Cargo los datos que quedaron guardados de la vez anterior
             CargarFilaDeEsperaDesdeArchivo();
             CargarEstadisticas();
 
-            // Inicializar timer (desactivado hasta que haya al menos un pasajero)
+            // El timer arranca apagado
             timerCombi.Enabled = false;
             ActualizarTiempoRestante();
 
-            // Actualizar interfaz
+            // Actualizo la pantalla
             ActualizarListaEnEspera();
             ActualizarEstadisticas();
         }
 
-        /// <summary>
-        /// Inicializa el ComboBox con los tipos de pasajero
-        /// </summary>
+        // Cargo los tipos de pasajero en el ComboBox
         private void InicializarTiposPasajero()
         {
             cmbTipoPasajero.Items.Clear();
             cmbTipoPasajero.Items.Add("[N] Normal - $500");
             cmbTipoPasajero.Items.Add("[E] Estudiante - $250");
             cmbTipoPasajero.Items.Add("[J] Jubilado - Gratis");
-            cmbTipoPasajero.SelectedIndex = 0; // Por defecto: Normal
+            cmbTipoPasajero.SelectedIndex = 0; // Normal por defecto
         }
 
-        /// <summary>
-        /// Evento que se ejecuta al cerrar el formulario
-        /// Guarda todos los datos antes de cerrar
-        /// </summary>
+        // Cuando cierro el programa
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Si hay pasajeros en espera, preguntar si desea cerrar
+            // Si hay pasajeros esperando, pregunto si está seguro
             if (filaDeEspera.Count > 0 || pasajerosEnCombi.Count > 0)
             {
                 var resultado = MessageBox.Show(
@@ -127,30 +93,27 @@ namespace AppCombis
 
                 if (resultado == DialogResult.No)
                 {
-                    e.Cancel = true;
+                    e.Cancel = true; // Cancelo el cierre
                     return;
                 }
             }
 
-            // Guardar datos
+            // Guardo todo antes de cerrar
             GuardarFilaDeEsperaEnArchivo();
             GuardarEstadisticas();
         }
 
         // ============================================
-        // EVENTO: BOTÓN "ANOTAR"
+        // BOTÓN ANOTAR
         // ============================================
 
-        /// <summary>
-        /// Maneja el clic del botón "Anotar"
-        /// Agrega un nuevo pasajero a la fila de espera
-        /// </summary>
+        // Cuando clickean el botón "Anotar"
         private void btnAnotar_Click(object sender, EventArgs e)
         {
-            // Obtener el nombre del pasajero
+            // Agarro el nombre que escribieron
             string nombrePasajero = txtPasajero.Text.Trim();
 
-            // VALIDACIÓN: Campo vacío
+            // Verifico que no esté vacío
             if (string.IsNullOrEmpty(nombrePasajero))
             {
                 MessageBox.Show(
@@ -162,7 +125,7 @@ namespace AppCombis
                 return;
             }
 
-            // VALIDACIÓN: Capacidad máxima
+            // Me fijo si ya está llena la combi
             if (filaDeEspera.Count >= CAPACIDAD_COMBI)
             {
                 MessageBox.Show(
@@ -174,7 +137,7 @@ namespace AppCombis
                 return;
             }
 
-            // Obtener el tipo de pasajero seleccionado
+            // Veo qué tipo de pasajero seleccionó
             Pasajero.TipoPasajero tipo = cmbTipoPasajero.SelectedIndex switch
             {
                 0 => Pasajero.TipoPasajero.Normal,
@@ -183,26 +146,26 @@ namespace AppCombis
                 _ => Pasajero.TipoPasajero.Normal
             };
 
-            // Crear el nuevo pasajero
+            // Creo el pasajero nuevo
             Pasajero nuevoPasajero = new Pasajero(nombrePasajero, tipo);
 
-            // Agregar a la cola (estructura dinámica)
+            // Lo agrego a la fila (al final)
             filaDeEspera.Enqueue(nuevoPasajero);
 
-            // Si es el primer pasajero, iniciar el temporizador
+            // Si es el primero, arranco el timer
             if (filaDeEspera.Count == 1 && !combiEnEspera)
             {
                 IniciarTemporizador();
             }
 
-            // Limpiar campos
+            // Limpio el campo de texto
             txtPasajero.Clear();
             txtPasajero.Focus();
 
-            // Actualizar interfaz
+            // Actualizo la lista en pantalla
             ActualizarListaEnEspera();
 
-            // Mensaje de confirmación
+            // Muestro mensaje de confirmación
             MessageBox.Show(
                 $"PASAJERO ANOTADO:\n\n" +
                 $"Nombre: {nuevoPasajero.Nombre}\n" +
@@ -217,16 +180,13 @@ namespace AppCombis
         }
 
         // ============================================
-        // EVENTO: BOTÓN "SUBIR A LA COMBI"
+        // BOTÓN SUBIR A LA COMBI
         // ============================================
 
-        /// <summary>
-        /// Maneja el clic del botón "Subir a la combi"
-        /// Inicia un viaje con todos los pasajeros en espera
-        /// </summary>
+        // Cuando clickean "Subir a la combi"
         private void btnSubir_Click(object sender, EventArgs e)
         {
-            // VALIDACIÓN: Verificar si hay pasajeros
+            // Me fijo si hay alguien esperando
             if (filaDeEspera.Count == 0)
             {
                 MessageBox.Show(
@@ -238,18 +198,7 @@ namespace AppCombis
                 return;
             }
 
-            // VALIDACIÓN: Debe haber al menos 1 pasajero
-            if (filaDeEspera.Count < 1)
-            {
-                MessageBox.Show(
-                    "Se necesita al menos 1 pasajero para iniciar el viaje.",
-                    "Pasajeros insuficientes",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Confirmar inicio de viaje
+            // Pido confirmación
             var resultado = MessageBox.Show(
                 $"¿Iniciar viaje con {filaDeEspera.Count} pasajeros?\n\n" +
                 $"Tiempo de espera actual: {FormatearTiempo(tiempoRestanteSegundos)}",
@@ -260,50 +209,50 @@ namespace AppCombis
             if (resultado == DialogResult.No)
                 return;
 
-            // Seleccionar ruta de recorrido
+            // Le pido que elija la ruta
             RutaRecorrido ruta = SeleccionarRuta();
 
-            // Subir todos los pasajeros a la combi
+            // Subo a todos los pasajeros (voy sacando de la fila)
             pasajerosEnCombi.Clear();
             while (filaDeEspera.Count > 0)
             {
                 pasajerosEnCombi.Add(filaDeEspera.Dequeue());
             }
 
-            // Detener temporizador
+            // Paro el timer
             timerCombi.Stop();
             combiEnEspera = false;
 
-            // Registrar el viaje en las estadísticas
+            // Guardo el viaje en las estadísticas
             estadisticas.RegistrarViaje(pasajerosEnCombi);
 
-            // Mostrar detalles del viaje
+            // Muestro los detalles del viaje
             MostrarDetallesViaje(ruta);
 
-            // Limpiar combi y reiniciar
+            // Limpio todo para el próximo viaje
             pasajerosEnCombi.Clear();
             tiempoRestanteSegundos = TIEMPO_ESPERA_SEGUNDOS;
 
-            // Actualizar interfaz
+            // Actualizo la pantalla
             ActualizarListaEnEspera();
             ActualizarEstadisticas();
             ActualizarTiempoRestante();
         }
 
         // ============================================
-        // EVENTO: TIMER
+        // TEMPORIZADOR
         // ============================================
 
-        /// <summary>
-        /// Se ejecuta cada segundo para actualizar el temporizador
-        /// </summary>
+        // Esto se ejecuta cada segundo
         private void timerCombi_Tick(object sender, EventArgs e)
         {
+            // Resto 1 segundo
             tiempoRestanteSegundos--;
 
+            // Actualizo el label con el tiempo
             ActualizarTiempoRestante();
 
-            // Si se acabó el tiempo, iniciar viaje automáticamente
+            // Si se acabó el tiempo, la combi sale sola
             if (tiempoRestanteSegundos <= 0)
             {
                 timerCombi.Stop();
@@ -314,29 +263,27 @@ namespace AppCombis
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
-                // Simular clic en botón subir
+                // Hago como si hubieran clickeado el botón subir
                 btnSubir_Click(sender, e);
             }
         }
 
         // ============================================
-        // EVENTO: BOTÓN REPORTE
+        // BOTÓN GENERAR REPORTE
         // ============================================
 
-        /// <summary>
-        /// Genera y descarga el reporte del día
-        /// </summary>
+        // Cuando clickean "Generar Reporte"
         private void btnReporte_Click(object sender, EventArgs e)
         {
             try
             {
-                // Generar nombre de archivo con fecha
+                // Creo el nombre del archivo con la fecha y hora
                 string nombreArchivo = $"Reporte_Combis_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
 
-                // Guardar reporte
+                // Guardo el reporte
                 estadisticas.GuardarReporte(nombreArchivo);
 
-                // Mostrar confirmación
+                // Pregunto si lo quiere abrir
                 var resultado = MessageBox.Show(
                     $"REPORTE GENERADO EXITOSAMENTE:\n\n" +
                     $"{nombreArchivo}\n\n" +
@@ -347,6 +294,7 @@ namespace AppCombis
 
                 if (resultado == DialogResult.Yes)
                 {
+                    // Abro el archivo en el Notepad
                     System.Diagnostics.Process.Start("notepad.exe", nombreArchivo);
                 }
             }
@@ -361,24 +309,20 @@ namespace AppCombis
         }
 
         // ============================================
-        // EVENTO: BOTÓN CERRAR
+        // BOTÓN CERRAR
         // ============================================
 
-        /// <summary>
-        /// Cierra la aplicación
-        /// </summary>
+        // Cuando clickean el botón "Cerrar Aplicación"
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
         // ============================================
-        // MÉTODOS AUXILIARES
+        // FUNCIONES AUXILIARES
         // ============================================
 
-        /// <summary>
-        /// Inicia el temporizador de 20 minutos
-        /// </summary>
+        // Arranco el temporizador de 20 minutos
         private void IniciarTemporizador()
         {
             tiempoRestanteSegundos = TIEMPO_ESPERA_SEGUNDOS;
@@ -394,25 +338,21 @@ namespace AppCombis
                 MessageBoxIcon.Information);
         }
 
-        /// <summary>
-        /// Actualiza la visualización del tiempo restante
-        /// </summary>
+        // Actualizo el label del tiempo y le cambio el color
         private void ActualizarTiempoRestante()
         {
             lblTiempoRestante.Text = FormatearTiempo(tiempoRestanteSegundos);
 
-            // Cambiar color según tiempo restante
-            if (tiempoRestanteSegundos <= 60) // Último minuto
+            // Cambio el color según cuánto tiempo queda
+            if (tiempoRestanteSegundos <= 60) // Menos de 1 minuto
                 lblTiempoRestante.ForeColor = Color.Red;
-            else if (tiempoRestanteSegundos <= 300) // Últimos 5 minutos
+            else if (tiempoRestanteSegundos <= 300) // Menos de 5 minutos
                 lblTiempoRestante.ForeColor = Color.Orange;
             else
                 lblTiempoRestante.ForeColor = Color.FromArgb(0, 102, 204);
         }
 
-        /// <summary>
-        /// Formatea segundos a formato MM:SS
-        /// </summary>
+        // Convierto los segundos a formato MM:SS
         private string FormatearTiempo(int segundos)
         {
             int minutos = segundos / 60;
@@ -420,11 +360,10 @@ namespace AppCombis
             return $"{minutos:D2}:{segs:D2}";
         }
 
-        /// <summary>
-        /// Permite seleccionar la ruta de recorrido
-        /// </summary>
+        // Le pido al usuario que elija una ruta
         private RutaRecorrido SeleccionarRuta()
         {
+            // Creo un formulario nuevo para elegir la ruta
             var form = new Form
             {
                 Text = "Seleccionar Ruta",
@@ -449,7 +388,7 @@ namespace AppCombis
                 Text = "[1] Ruta 1: Obelisco -> Puerto Madero (20 min)",
                 Location = new Point(30, 60),
                 Width = 350,
-                Checked = true
+                Checked = true // Esta es la que viene marcada por defecto
             };
 
             var rbRuta2 = new RadioButton
@@ -474,6 +413,7 @@ namespace AppCombis
                 DialogResult = DialogResult.OK
             };
 
+            // Agrego todos los controles al formulario
             form.Controls.Add(lblTitulo);
             form.Controls.Add(rbRuta1);
             form.Controls.Add(rbRuta2);
@@ -481,16 +421,16 @@ namespace AppCombis
             form.Controls.Add(btnOk);
             form.AcceptButton = btnOk;
 
+            // Muestro el formulario y espero
             form.ShowDialog();
 
+            // Devuelvo la ruta que eligió
             if (rbRuta1.Checked) return RutaRecorrido.ObeliscoPuertoMadero;
             if (rbRuta2.Checked) return RutaRecorrido.ObeliscoRecoleta;
             return RutaRecorrido.ObeliscoPalermo;
         }
 
-        /// <summary>
-        /// Muestra los detalles del viaje realizado
-        /// </summary>
+        // Muestro un mensaje con todos los detalles del viaje
         private void MostrarDetallesViaje(RutaRecorrido ruta)
         {
             var sb = new System.Text.StringBuilder();
@@ -500,7 +440,7 @@ namespace AppCombis
             sb.AppendLine("=============================================");
             sb.AppendLine();
             
-            // Información de la ruta
+            // Muestro qué ruta eligió
             string nombreRuta = ruta switch
             {
                 RutaRecorrido.ObeliscoPuertoMadero => "Obelisco -> Puerto Madero (20 min)",
@@ -514,7 +454,7 @@ namespace AppCombis
             sb.AppendLine($"Pasajeros: {pasajerosEnCombi.Count}");
             sb.AppendLine();
             
-            // Desglose por tipo
+            // Cuento cuántos hay de cada tipo
             int normales = pasajerosEnCombi.Count(p => p.Tipo == Pasajero.TipoPasajero.Normal);
             int estudiantes = pasajerosEnCombi.Count(p => p.Tipo == Pasajero.TipoPasajero.Estudiante);
             int jubilados = pasajerosEnCombi.Count(p => p.Tipo == Pasajero.TipoPasajero.Jubilado);
@@ -527,14 +467,14 @@ namespace AppCombis
             sb.AppendLine($" [J] Jubilados:   {jubilados}");
             sb.AppendLine();
             
-            // Recaudación
+            // Calculo cuánta plata se recaudó
             decimal recaudacion = pasajerosEnCombi.Sum(p => p.Tarifa);
             sb.AppendLine("---------------------------------------------");
             sb.AppendLine($" RECAUDACION: ${recaudacion}");
             sb.AppendLine("---------------------------------------------");
             sb.AppendLine();
             
-            // Lista de pasajeros
+            // Lista todos los pasajeros
             sb.AppendLine(" PASAJEROS A BORDO:");
             int num = 1;
             foreach (var pasajero in pasajerosEnCombi)
@@ -552,19 +492,16 @@ namespace AppCombis
         }
 
         // ============================================
-        // MÉTODO: ACTUALIZAR LISTA VISUAL
+        // ACTUALIZAR LA LISTA EN PANTALLA
         // ============================================
 
-        /// <summary>
-        /// Actualiza el ListBox con los pasajeros actuales en la fila de espera
-        /// Muestra el orden en que subirán a la combi
-        /// </summary>
+        // Actualizo el ListBox con los pasajeros que están esperando
         private void ActualizarListaEnEspera()
         {
-            // Limpiar el ListBox
+            // Limpio lo que había antes
             lstEnEspera.Items.Clear();
 
-            // Verificar si la fila está vacía
+            // Si no hay nadie esperando
             if (filaDeEspera.Count == 0)
             {
                 lstEnEspera.Items.Add("(No hay pasajeros en espera)");
@@ -572,23 +509,22 @@ namespace AppCombis
                 return;
             }
 
-            // Recorrer la cola SIN MODIFICARLA (estructura dinámica)
-            // ToArray() crea una copia temporal para iterar
+            // Recorro la fila y los voy mostrando
+            // ToArray() me deja ver la cola sin modificarla
             int posicion = 1;
             foreach (Pasajero pasajero in filaDeEspera.ToArray())
             {
+                // Calculo cuánto tiempo lleva esperando
                 string tiempoEspera = (DateTime.Now - pasajero.HoraAnotacion).Minutes + " min";
                 lstEnEspera.Items.Add($"{posicion}. {pasajero} | Espera: {tiempoEspera}");
                 posicion++;
             }
 
-            // Actualizar título con contador
+            // Actualizo el título con cuántos hay
             groupBoxTerminal.Text = $"Terminal Obelisco - Pasajeros: {filaDeEspera.Count}/{CAPACIDAD_COMBI}";
         }
 
-        /// <summary>
-        /// Actualiza las estadísticas en la interfaz
-        /// </summary>
+        // Actualizo los labels de las estadísticas
         private void ActualizarEstadisticas()
         {
             lblViajesHoy.Text = $"Viajes: {estadisticas.TotalViajes}";
@@ -597,17 +533,15 @@ namespace AppCombis
         }
 
         // ============================================
-        // PERSISTENCIA: GUARDAR EN ARCHIVO
+        // GUARDAR Y CARGAR DATOS
         // ============================================
 
-        /// <summary>
-        /// Guarda la fila de espera actual en un archivo
-        /// </summary>
+        // Guardo la fila de espera en un archivo de texto
         private void GuardarFilaDeEsperaEnArchivo()
         {
             try
             {
-                // Si no hay pasajeros, eliminar el archivo
+                // Si no hay nadie, borro el archivo
                 if (filaDeEspera.Count == 0)
                 {
                     if (File.Exists(ARCHIVO_FILA))
@@ -615,7 +549,7 @@ namespace AppCombis
                     return;
                 }
 
-                // Guardar cada pasajero en formato CSV
+                // Guardo cada pasajero en una línea
                 using (StreamWriter escritor = new StreamWriter(ARCHIVO_FILA))
                 {
                     foreach (Pasajero pasajero in filaDeEspera)
@@ -634,21 +568,19 @@ namespace AppCombis
             }
         }
 
-        /// <summary>
-        /// Carga la fila de espera desde un archivo
-        /// </summary>
+        // Cargo la fila de espera desde el archivo
         private void CargarFilaDeEsperaDesdeArchivo()
         {
             try
             {
-                // Verificar si existe el archivo
+                // Me fijo si existe el archivo
                 if (!File.Exists(ARCHIVO_FILA))
                 {
                     ActualizarListaEnEspera();
                     return;
                 }
 
-                // Leer línea por línea
+                // Leo línea por línea
                 using (StreamReader lector = new StreamReader(ARCHIVO_FILA))
                 {
                     string linea;
@@ -662,13 +594,13 @@ namespace AppCombis
                     }
                 }
 
-                // Actualizar interfaz
+                // Actualizo la pantalla
                 ActualizarListaEnEspera();
 
-                // Si hay pasajeros, iniciar temporizador
+                // Si hay pasajeros, arranco el timer desde donde quedó
                 if (filaDeEspera.Count > 0 && !combiEnEspera)
                 {
-                    // Calcular tiempo transcurrido desde el primer pasajero
+                    // Veo cuánto tiempo pasó desde que se anotó el primero
                     var primerPasajero = filaDeEspera.Peek();
                     int tiempoTranscurrido = (int)(DateTime.Now - primerPasajero.HoraAnotacion).TotalSeconds;
                     tiempoRestanteSegundos = Math.Max(0, TIEMPO_ESPERA_SEGUNDOS - tiempoTranscurrido);
@@ -680,7 +612,7 @@ namespace AppCombis
                     }
                 }
 
-                // Mensaje informativo
+                // Aviso que se cargaron los datos
                 if (filaDeEspera.Count > 0)
                 {
                     MessageBox.Show(
@@ -703,9 +635,7 @@ namespace AppCombis
             }
         }
 
-        /// <summary>
-        /// Guarda las estadísticas del día
-        /// </summary>
+        // Guardo las estadísticas en un archivo
         private void GuardarEstadisticas()
         {
             try
@@ -731,9 +661,7 @@ namespace AppCombis
             }
         }
 
-        /// <summary>
-        /// Carga las estadísticas del día
-        /// </summary>
+        // Cargo las estadísticas desde el archivo
         private void CargarEstadisticas()
         {
             try
@@ -741,7 +669,7 @@ namespace AppCombis
                 if (!File.Exists(ARCHIVO_ESTADISTICAS))
                     return;
 
-                // Verificar si las estadísticas son del día actual
+                // Solo cargo las estadísticas si son de hoy
                 bool esHoy = false;
                 using (StreamReader lector = new StreamReader(ARCHIVO_ESTADISTICAS))
                 {
@@ -756,7 +684,7 @@ namespace AppCombis
                                 case "Fecha":
                                     DateTime fechaGuardada = DateTime.Parse(partes[1]);
                                     esHoy = fechaGuardada.Date == DateTime.Today;
-                                    if (!esHoy) return; // Si no es de hoy, no cargar
+                                    if (!esHoy) return; // Si no es de hoy, no cargo nada
                                     break;
                                 case "TotalViajes":
                                     estadisticas.TotalViajes = int.Parse(partes[1]);
@@ -785,14 +713,14 @@ namespace AppCombis
             }
             catch
             {
-                // Si hay error, iniciar con estadísticas nuevas
+                // Si hay error, empiezo de cero
                 estadisticas = new EstadisticasDiarias();
             }
         }
 
         private void cmbTipoPasajero_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            // Este método está vacío pero lo dejo por si después necesito usarlo
         }
     }
 }

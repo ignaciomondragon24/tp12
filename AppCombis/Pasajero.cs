@@ -1,68 +1,37 @@
 namespace AppCombis
 {
-    /// <summary>
-    /// Representa un pasajero del servicio de combis
-    /// Incluye información sobre el tipo de pasajero y tarifa correspondiente
-    /// </summary>
+    // Representa a un pasajero que se anota para viajar
     public class Pasajero
     {
-        // ============================================
-        // ENUMERACIÓN: TIPOS DE PASAJERO
-        // ============================================
-        
-        /// <summary>
-        /// Define los tipos de pasajero disponibles con sus respectivas tarifas
-        /// </summary>
+        // Los 3 tipos de pasajero que existen
         public enum TipoPasajero
         {
-            Normal,      // Tarifa completa: $500
-            Estudiante,  // Tarifa reducida: $250 (50% descuento)
-            Jubilado     // Tarifa gratuita: $0 (viaja gratis)
+            Normal,      // Paga $500
+            Estudiante,  // Paga $250 (mitad de precio)
+            Jubilado     // Viaja gratis
         }
 
-        // ============================================
-        // PROPIEDADES
-        // ============================================
-        
-        /// <summary>
-        /// Nombre completo del pasajero
-        /// </summary>
+        // Datos del pasajero
         public string Nombre { get; set; }
-
-        /// <summary>
-        /// Tipo de pasajero (Normal, Estudiante o Jubilado)
-        /// </summary>
         public TipoPasajero Tipo { get; set; }
-
-        /// <summary>
-        /// Hora en que el pasajero se anotó en la fila
-        /// </summary>
         public DateTime HoraAnotacion { get; set; }
 
-        /// <summary>
-        /// Tarifa que debe pagar el pasajero según su tipo
-        /// </summary>
+        // Calcula cuánto paga según su tipo
         public decimal Tarifa
         {
             get
             {
                 return Tipo switch
                 {
-                    TipoPasajero.Normal => 500m,      // Tarifa completa
-                    TipoPasajero.Estudiante => 250m,  // 50% descuento
-                    TipoPasajero.Jubilado => 0m,      // Viaja gratis
+                    TipoPasajero.Normal => 500m,
+                    TipoPasajero.Estudiante => 250m,
+                    TipoPasajero.Jubilado => 0m,
                     _ => 500m
                 };
             }
         }
 
-        // ============================================
-        // CONSTRUCTORES
-        // ============================================
-        
-        /// <summary>
-        /// Constructor por defecto
-        /// </summary>
+        // Constructor vacío
         public Pasajero()
         {
             Nombre = string.Empty;
@@ -70,11 +39,7 @@ namespace AppCombis
             HoraAnotacion = DateTime.Now;
         }
 
-        /// <summary>
-        /// Constructor con parámetros
-        /// </summary>
-        /// <param name="nombre">Nombre del pasajero</param>
-        /// <param name="tipo">Tipo de pasajero</param>
+        // Constructor con datos
         public Pasajero(string nombre, TipoPasajero tipo)
         {
             Nombre = nombre;
@@ -82,13 +47,7 @@ namespace AppCombis
             HoraAnotacion = DateTime.Now;
         }
 
-        // ============================================
-        // MÉTODOS
-        // ============================================
-        
-        /// <summary>
-        /// Obtiene el símbolo que representa al tipo de pasajero
-        /// </summary>
+        // Devuelve el símbolo del tipo de pasajero
         public string ObtenerSimbolo()
         {
             return Tipo switch
@@ -100,9 +59,7 @@ namespace AppCombis
             };
         }
 
-        /// <summary>
-        /// Obtiene una descripción del tipo de pasajero
-        /// </summary>
+        // Devuelve el nombre del tipo de pasajero
         public string ObtenerDescripcionTipo()
         {
             return Tipo switch
@@ -114,29 +71,25 @@ namespace AppCombis
             };
         }
 
-        /// <summary>
-        /// Representación en string del pasajero
-        /// </summary>
+        // Convierte el pasajero a texto para mostrarlo en pantalla
         public override string ToString()
         {
             return $"{ObtenerSimbolo()} {Nombre} ({ObtenerDescripcionTipo()}) - ${Tarifa}";
         }
 
-        /// <summary>
-        /// Serializa el pasajero a formato CSV para guardar en archivo
-        /// </summary>
+        // Convierte el pasajero a formato CSV para guardarlo en archivo
+        // Formato: Nombre|Tipo|Fecha
         public string ToCsv()
         {
             return $"{Nombre}|{(int)Tipo}|{HoraAnotacion:yyyy-MM-dd HH:mm:ss}";
         }
 
-        /// <summary>
-        /// Deserializa un pasajero desde formato CSV
-        /// </summary>
+        // Crea un pasajero desde una línea CSV del archivo
         public static Pasajero FromCsv(string csv)
         {
             try
             {
+                // Separo la línea por el caracter |
                 string[] partes = csv.Split('|');
                 if (partes.Length >= 3)
                 {
@@ -150,7 +103,7 @@ namespace AppCombis
             }
             catch
             {
-                // Si hay error, crear pasajero normal por defecto
+                // Si hay error, devuelvo un pasajero normal
             }
 
             return new Pasajero(csv, TipoPasajero.Normal);

@@ -1,72 +1,29 @@
 namespace AppCombis
 {
-    /// <summary>
-    /// Gestiona las estadísticas diarias del servicio de combis
-    /// Registra viajes, pasajeros y recaudación
-    /// </summary>
+    // Guarda las estadísticas del día (viajes, pasajeros, plata)
     public class EstadisticasDiarias
     {
-        // ============================================
-        // PROPIEDADES
-        // ============================================
-        
-        /// <summary>
-        /// Fecha de las estadísticas
-        /// </summary>
+        // Datos generales
         public DateTime Fecha { get; set; }
-
-        /// <summary>
-        /// Total de viajes realizados en el día
-        /// </summary>
         public int TotalViajes { get; set; }
-
-        /// <summary>
-        /// Total de pasajeros transportados
-        /// </summary>
         public int TotalPasajeros { get; set; }
-
-        /// <summary>
-        /// Cantidad de pasajeros normales
-        /// </summary>
+        
+        // Contadores por tipo de pasajero
         public int PasajerosNormales { get; set; }
-
-        /// <summary>
-        /// Cantidad de estudiantes
-        /// </summary>
         public int PasajerosEstudiantes { get; set; }
-
-        /// <summary>
-        /// Cantidad de jubilados
-        /// </summary>
         public int PasajerosJubilados { get; set; }
-
-        /// <summary>
-        /// Recaudación total del día
-        /// </summary>
+        
+        // Plata total recaudada
         public decimal RecaudacionTotal { get; set; }
-
-        /// <summary>
-        /// Hora del primer viaje
-        /// </summary>
+        
+        // Horarios
         public DateTime? HoraPrimerViaje { get; set; }
-
-        /// <summary>
-        /// Hora del último viaje
-        /// </summary>
         public DateTime? HoraUltimoViaje { get; set; }
-
-        /// <summary>
-        /// Lista de viajes realizados (con detalles)
-        /// </summary>
+        
+        // Lista de todos los viajes del día
         public List<Viaje> Viajes { get; set; }
 
-        // ============================================
-        // CLASE INTERNA: VIAJE
-        // ============================================
-        
-        /// <summary>
-        /// Representa un viaje individual de la combi
-        /// </summary>
+        // Representa un viaje individual
         public class Viaje
         {
             public int NumeroViaje { get; set; }
@@ -82,10 +39,7 @@ namespace AppCombis
             }
         }
 
-        // ============================================
-        // CONSTRUCTOR
-        // ============================================
-        
+        // Constructor
         public EstadisticasDiarias()
         {
             Fecha = DateTime.Today;
@@ -98,19 +52,13 @@ namespace AppCombis
             Viajes = new List<Viaje>();
         }
 
-        // ============================================
-        // MÉTODOS
-        // ============================================
-        
-        /// <summary>
-        /// Registra un nuevo viaje con sus pasajeros
-        /// </summary>
+        // Registra un viaje nuevo con todos sus datos
         public void RegistrarViaje(List<Pasajero> pasajeros)
         {
             if (pasajeros == null || pasajeros.Count == 0)
                 return;
 
-            // Crear el viaje
+            // Creo el viaje
             var viaje = new Viaje
             {
                 NumeroViaje = TotalViajes + 1,
@@ -119,13 +67,13 @@ namespace AppCombis
                 Pasajeros = new List<Pasajero>(pasajeros)
             };
 
-            // Calcular recaudación del viaje
+            // Calculo cuánta plata se recaudó y cuento por tipo
             decimal recaudacionViaje = 0;
             foreach (var pasajero in pasajeros)
             {
                 recaudacionViaje += pasajero.Tarifa;
 
-                // Contabilizar por tipo
+                // Sumo 1 al contador correspondiente
                 switch (pasajero.Tipo)
                 {
                     case Pasajero.TipoPasajero.Normal:
@@ -142,23 +90,21 @@ namespace AppCombis
 
             viaje.RecaudacionViaje = recaudacionViaje;
 
-            // Actualizar estadísticas generales
+            // Actualizo los totales generales
             TotalViajes++;
             TotalPasajeros += pasajeros.Count;
             RecaudacionTotal += recaudacionViaje;
 
-            // Registrar horarios
+            // Guardo los horarios
             if (HoraPrimerViaje == null)
                 HoraPrimerViaje = viaje.HoraSalida;
             HoraUltimoViaje = viaje.HoraSalida;
 
-            // Agregar el viaje a la lista
+            // Agrego el viaje a la lista
             Viajes.Add(viaje);
         }
 
-        /// <summary>
-        /// Calcula el promedio de pasajeros por viaje
-        /// </summary>
+        // Calcula el promedio de pasajeros por viaje
         public double PromedioPasajerosPorViaje
         {
             get
@@ -168,9 +114,7 @@ namespace AppCombis
             }
         }
 
-        /// <summary>
-        /// Calcula el promedio de recaudación por viaje
-        /// </summary>
+        // Calcula el promedio de recaudación por viaje
         public decimal PromedioRecaudacionPorViaje
         {
             get
@@ -180,9 +124,7 @@ namespace AppCombis
             }
         }
 
-        /// <summary>
-        /// Genera un reporte en texto de las estadísticas
-        /// </summary>
+        // Genera el reporte completo en texto
         public string GenerarReporte()
         {
             var sb = new System.Text.StringBuilder();
@@ -212,7 +154,7 @@ namespace AppCombis
             }
             sb.AppendLine();
 
-            // Desglose por tipo de pasajero
+            // Desglose por tipo
             sb.AppendLine("-------------------------------------------------------");
             sb.AppendLine("  DESGLOSE POR TIPO DE PASAJERO");
             sb.AppendLine("-------------------------------------------------------");
@@ -230,7 +172,7 @@ namespace AppCombis
             sb.AppendLine($"  [J] Jubilados:   ${PasajerosJubilados * 0m:N2}");
             sb.AppendLine();
 
-            // Detalle de viajes
+            // Detalle de cada viaje
             if (Viajes.Count > 0)
             {
                 sb.AppendLine("-------------------------------------------------------");
@@ -251,18 +193,14 @@ namespace AppCombis
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Calcula el porcentaje de un tipo de pasajero
-        /// </summary>
+        // Calcula qué porcentaje representa un tipo de pasajero
         private double PorcentajeTipo(int cantidad)
         {
             if (TotalPasajeros == 0) return 0;
             return (double)cantidad / TotalPasajeros * 100;
         }
 
-        /// <summary>
-        /// Guarda el reporte en un archivo de texto
-        /// </summary>
+        // Guarda el reporte en un archivo
         public void GuardarReporte(string rutaArchivo)
         {
             try
