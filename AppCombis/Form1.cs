@@ -1,16 +1,16 @@
 namespace AppCombis
 {
     // Sistema de Combis - TP 12
-    // Maneja la fila de espera de pasajeros y viajes de la combi
+   
     public partial class Form1 : Form
     {
-        // ============================================
+   
         // VARIABLES GLOBALES
-        // ============================================
+      
 
         // Cola para la fila de pasajeros (FIFO - el primero que llega es el primero que sube)
         private Queue<Pasajero> filaDeEspera = new Queue<Pasajero>();
-
+        
         // Lista de pasajeros que están en la combi en este momento
         private List<Pasajero> pasajerosEnCombi = new List<Pasajero>();
 
@@ -239,9 +239,9 @@ namespace AppCombis
             ActualizarTiempoRestante();
         }
 
-        // ============================================
+        
         // TEMPORIZADOR
-        // ============================================
+     
 
         // Esto se ejecuta cada segundo
         private void timerCombi_Tick(object sender, EventArgs e)

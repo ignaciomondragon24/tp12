@@ -8,4 +8,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\README.md" Link="README.md" />
+    <None Include="..\CAMBIOS_REALIZADOS.md" Link="CAMBIOS_REALIZADOS.md" />
+    <None Include="..\DEFENSA_ORAL_TP12.md" Link="DEFENSA_ORAL_TP12.md" />
+    <None Include="INICIO_RAPIDO.md" />
+  </ItemGroup>
+
 </Project>
