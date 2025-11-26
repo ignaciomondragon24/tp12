@@ -330,6 +330,9 @@ namespace AppCombis
             ActualizarListaCombis();
             ActualizarListaPasajeros();
 
+            // Verifico si la combi llegó a capacidad máxima
+            bool combiLlena = combiSeleccionada.FilaDeEspera.Count >= combiSeleccionada.Capacidad;
+
             // Muestro mensaje de confirmación
             if (agregados == cantidadPasajeros)
             {
@@ -361,17 +364,29 @@ namespace AppCombis
                              $"Pasajeros en combi: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad}";
                 }
 
-                // Si es el primer pasajero, agrego info del timer
+                // Si es el primer pasajero de la combi, agrego info del timer
                 if (esPrimerPasajero)
                 {
                     mensaje = "PRIMER PASAJERO - TIMER INICIADO\n" +
                              "Timer: 20:00 minutos\n\n" + mensaje;
                 }
 
+                // Si la combi está llena, agrego aviso de salida automática
+                if (combiLlena)
+                {
+                    mensaje += "\n\n*** COMBI LLENA ***\nLa combi partira automaticamente!";
+                }
+
                 MessageBox.Show(mensaje,
                     cantidadPasajeros == 1 ? "Pasajero Agregado" : "Reserva Grupal",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
+
+                // Si la combi está llena, iniciar viaje automáticamente
+                if (combiLlena)
+                {
+                    IniciarViajeAutomatico(combiSeleccionada, "CAPACIDAD MAXIMA ALCANZADA");
+                }
             }
             else
             {
@@ -479,7 +494,7 @@ namespace AppCombis
             {
                 if (combi.ActualizarTimer())
                 {
-                    // Esta combi debe partir automáticamente
+                    // Esta combi debe partir automáticamente por tiempo agotado
                     combisAPartir.Add(combi);
                 }
             }
@@ -494,28 +509,7 @@ namespace AppCombis
             // Hago partir las combis que agotaron tiempo
             foreach (var combi in combisAPartir)
             {
-                var pasajeros = combi.IniciarViaje();
-                estadisticas.RegistrarViaje(pasajeros);
-
-                MessageBox.Show(
-                    $"TIEMPO AGOTADO (20 minutos)\n\n" +
-                    $"Combi: {combi.Nombre}\n" +
-                    $"Destino: {combi.Destino}\n" +
-                    $"Pasajeros: {pasajeros.Count}\n" +
-                    $"Recaudacion: ${pasajeros.Sum(p => p.Tarifa)}\n\n" +
-                    $"La combi partio automaticamente.",
-                    "Viaje Automatico",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-                combi.FinalizarViaje();
-            }
-
-            if (combisAPartir.Count > 0)
-            {
-                ActualizarListaCombis();
-                ActualizarListaPasajeros();
-                ActualizarEstadisticas();
+                IniciarViajeAutomatico(combi, "TIEMPO AGOTADO (20 minutos)");
             }
         }
 
@@ -814,6 +808,88 @@ namespace AppCombis
                 }
             }
             catch { }
+        }
+
+        // ============================================
+        // VIAJE AUTOMÁTICO
+        // ============================================
+
+        private void IniciarViajeAutomatico(Combi combi, string motivo)
+        {
+            if (combi == null || combi.FilaDeEspera.Count == 0)
+                return;
+
+            // Detengo el timer
+            timerCombis.Stop();
+
+            // Obtengo los pasajeros
+            var pasajeros = combi.IniciarViaje();
+
+            // Registro en estadísticas
+            estadisticas.RegistrarViaje(pasajeros);
+
+            // Muestro mensaje de salida automática
+            var sb = new System.Text.StringBuilder();
+
+            sb.AppendLine("=============================================");
+            sb.AppendLine($"         {motivo}");
+            sb.AppendLine("=============================================");
+            sb.AppendLine();
+            sb.AppendLine("VIAJE AUTOMATICO INICIADO");
+            sb.AppendLine();
+            sb.AppendLine($"Combi: {combi.Nombre}");
+            sb.AppendLine($"Destino: {combi.Destino}");
+            sb.AppendLine($"Hora salida: {DateTime.Now:HH:mm:ss}");
+            sb.AppendLine($"Pasajeros: {pasajeros.Count}");
+            sb.AppendLine();
+
+            int normales = pasajeros.Count(p => p.Tipo == Pasajero.TipoPasajero.Normal);
+            int estudiantes = pasajeros.Count(p => p.Tipo == Pasajero.TipoPasajero.Estudiante);
+            int jubilados = pasajeros.Count(p => p.Tipo == Pasajero.TipoPasajero.Jubilado);
+
+            sb.AppendLine("---------------------------------------------");
+            sb.AppendLine(" DESGLOSE:");
+            sb.AppendLine("---------------------------------------------");
+            sb.AppendLine($" [N] Normales:    {normales}");
+            sb.AppendLine($" [E] Estudiantes: {estudiantes}");
+            sb.AppendLine($" [J] Jubilados:   {jubilados}");
+            sb.AppendLine();
+
+            decimal recaudacion = pasajeros.Sum(p => p.Tarifa);
+            sb.AppendLine($" RECAUDACION: ${recaudacion:N2}");
+            sb.AppendLine();
+
+            sb.AppendLine(" PASAJEROS A BORDO:");
+            int num = 1;
+            foreach (var pasajero in pasajeros.Take(10)) // Muestro máximo 10 en el mensaje
+            {
+                sb.AppendLine($" {num}. {pasajero}");
+                num++;
+            }
+
+            if (pasajeros.Count > 10)
+            {
+                sb.AppendLine($" ... y {pasajeros.Count - 10} pasajeros mas");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("=============================================");
+            sb.AppendLine("   Buen viaje!");
+            sb.AppendLine("=============================================");
+
+            MessageBox.Show(sb.ToString(), "Viaje Automatico",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Finalizo el viaje
+            combi.FinalizarViaje();
+
+            // Actualizo interfaz
+            ActualizarListaCombis();
+            ActualizarListaPasajeros();
+            ActualizarEstadisticas();
+
+            // Reinicio el timer
+            timerCombis.Start();
         }
 
         // ============================================
