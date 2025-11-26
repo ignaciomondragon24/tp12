@@ -2,15 +2,8 @@
 {
     partial class Form1
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,322 +13,416 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            groupBoxTerminal = new GroupBox();
-            lblTiempoRestante = new Label();
-            lblTiempo = new Label();
-            cmbTipoPasajero = new ComboBox();
-            lblTipoPasajero = new Label();
-            lstEnEspera = new ListBox();
-            btnSubir = new Button();
-            btnAnotar = new Button();
-            txtPasajero = new TextBox();
-            lblEnEspera = new Label();
-            lblPasajero = new Label();
+            
+            // Controles principales
             lblTitulo = new Label();
+            
+            // Panel izquierdo - Combis
+            groupBoxCombis = new GroupBox();
+            lstCombis = new ListBox();
+            btnNuevaCombi = new Button();
+            btnEliminarCombi = new Button();
+            
+            // Panel central - Pasajeros
+            groupBoxPasajeros = new GroupBox();
+            lblInfoCombi = new Label();
+            lstPasajeros = new ListBox();
+            btnQuitarPasajero = new Button();
+            btnIniciarViaje = new Button();
+            
+            // Panel derecho - Agregar pasajero
+            groupBoxAgregar = new GroupBox();
+            lblNombrePasajero = new Label();
+            txtPasajero = new TextBox();
+            lblTipoPasajero = new Label();
+            cmbTipoPasajero = new ComboBox();
+            btnAgregarPasajero = new Button();
+            
+            // Panel inferior - Estadísticas y acciones
             groupBoxEstadisticas = new GroupBox();
-            lblRecaudacion = new Label();
-            lblPasajerosHoy = new Label();
             lblViajesHoy = new Label();
+            lblPasajerosHoy = new Label();
+            lblRecaudacion = new Label();
             btnReporte = new Button();
             btnCerrar = new Button();
-            timerCombi = new System.Windows.Forms.Timer(components);
-            groupBoxTerminal.SuspendLayout();
-            groupBoxEstadisticas.SuspendLayout();
+            
+            // Timer
+            timerCombis = new System.Windows.Forms.Timer(components);
+            
             SuspendLayout();
+            
             // 
-            // groupBoxTerminal
+            // lblTitulo
             // 
-            groupBoxTerminal.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            groupBoxTerminal.BackColor = Color.FromArgb(240, 248, 255);
-            groupBoxTerminal.Controls.Add(lblTiempoRestante);
-            groupBoxTerminal.Controls.Add(lblTiempo);
-            groupBoxTerminal.Controls.Add(cmbTipoPasajero);
-            groupBoxTerminal.Controls.Add(lblTipoPasajero);
-            groupBoxTerminal.Controls.Add(lstEnEspera);
-            groupBoxTerminal.Controls.Add(btnSubir);
-            groupBoxTerminal.Controls.Add(btnAnotar);
-            groupBoxTerminal.Controls.Add(txtPasajero);
-            groupBoxTerminal.Controls.Add(lblEnEspera);
-            groupBoxTerminal.Controls.Add(lblPasajero);
-            groupBoxTerminal.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            groupBoxTerminal.ForeColor = Color.FromArgb(0, 102, 204);
-            groupBoxTerminal.Location = new Point(20, 70);
-            groupBoxTerminal.Name = "groupBoxTerminal";
-            groupBoxTerminal.Size = new Size(520, 430);
-            groupBoxTerminal.TabIndex = 0;
-            groupBoxTerminal.TabStop = false;
-            groupBoxTerminal.Text = "Terminal Obelisco";
+            lblTitulo.Dock = DockStyle.Top;
+            lblTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblTitulo.ForeColor = Color.FromArgb(0, 102, 204);
+            lblTitulo.Location = new Point(0, 0);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(950, 35);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "🚌 SISTEMA DE GESTIÓN DE COMBIS - Terminal Obelisco";
+            lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
+            
             // 
-            // lblTiempoRestante
+            // groupBoxCombis
             // 
-            lblTiempoRestante.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblTiempoRestante.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lblTiempoRestante.ForeColor = Color.FromArgb(220, 20, 60);
-            lblTiempoRestante.Location = new Point(360, 25);
-            lblTiempoRestante.Name = "lblTiempoRestante";
-            lblTiempoRestante.Size = new Size(140, 30);
-            lblTiempoRestante.TabIndex = 9;
-            lblTiempoRestante.Text = "20:00";
-            lblTiempoRestante.TextAlign = ContentAlignment.MiddleRight;
+            groupBoxCombis.BackColor = Color.FromArgb(240, 248, 255);
+            groupBoxCombis.Controls.Add(lstCombis);
+            groupBoxCombis.Controls.Add(btnNuevaCombi);
+            groupBoxCombis.Controls.Add(btnEliminarCombi);
+            groupBoxCombis.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBoxCombis.ForeColor = Color.FromArgb(0, 102, 204);
+            groupBoxCombis.Location = new Point(10, 45);
+            groupBoxCombis.Name = "groupBoxCombis";
+            groupBoxCombis.Size = new Size(220, 380);
+            groupBoxCombis.TabIndex = 1;
+            groupBoxCombis.TabStop = false;
+            groupBoxCombis.Text = "COMBIS";
+            
             // 
-            // lblTiempo
+            // lstCombis
             // 
-            lblTiempo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblTiempo.AutoSize = true;
-            lblTiempo.Font = new Font("Segoe UI", 9F);
-            lblTiempo.ForeColor = Color.FromArgb(0, 102, 204);
-            lblTiempo.Location = new Point(340, 30);
-            lblTiempo.Name = "lblTiempo";
-            lblTiempo.Size = new Size(50, 15);
-            lblTiempo.TabIndex = 8;
-            lblTiempo.Text = "Tiempo:";
+            lstCombis.Font = new Font("Segoe UI", 8F);
+            lstCombis.FormattingEnabled = true;
+            lstCombis.ItemHeight = 13;
+            lstCombis.Location = new Point(10, 22);
+            lstCombis.Name = "lstCombis";
+            lstCombis.Size = new Size(200, 290);
+            lstCombis.TabIndex = 0;
+            lstCombis.SelectedIndexChanged += lstCombis_SelectedIndexChanged;
+            
             // 
-            // cmbTipoPasajero
+            // btnNuevaCombi
             // 
-            cmbTipoPasajero.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            cmbTipoPasajero.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbTipoPasajero.Font = new Font("Segoe UI", 10F);
-            cmbTipoPasajero.FormattingEnabled = true;
-            cmbTipoPasajero.Location = new Point(115, 100);
-            cmbTipoPasajero.Name = "cmbTipoPasajero";
-            cmbTipoPasajero.Size = new Size(200, 25);
-            cmbTipoPasajero.TabIndex = 7;
-            cmbTipoPasajero.SelectedIndexChanged += cmbTipoPasajero_SelectedIndexChanged;
+            btnNuevaCombi.BackColor = Color.FromArgb(46, 125, 50);
+            btnNuevaCombi.Cursor = Cursors.Hand;
+            btnNuevaCombi.FlatStyle = FlatStyle.Flat;
+            btnNuevaCombi.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnNuevaCombi.ForeColor = Color.White;
+            btnNuevaCombi.Location = new Point(10, 320);
+            btnNuevaCombi.Name = "btnNuevaCombi";
+            btnNuevaCombi.Size = new Size(200, 25);
+            btnNuevaCombi.TabIndex = 1;
+            btnNuevaCombi.Text = "+ Nueva Combi";
+            btnNuevaCombi.UseVisualStyleBackColor = false;
+            btnNuevaCombi.Click += btnNuevaCombi_Click;
+            
+            // 
+            // btnEliminarCombi
+            // 
+            btnEliminarCombi.BackColor = Color.FromArgb(211, 47, 47);
+            btnEliminarCombi.Cursor = Cursors.Hand;
+            btnEliminarCombi.FlatStyle = FlatStyle.Flat;
+            btnEliminarCombi.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnEliminarCombi.ForeColor = Color.White;
+            btnEliminarCombi.Location = new Point(10, 350);
+            btnEliminarCombi.Name = "btnEliminarCombi";
+            btnEliminarCombi.Size = new Size(200, 25);
+            btnEliminarCombi.TabIndex = 2;
+            btnEliminarCombi.Text = "- Eliminar";
+            btnEliminarCombi.UseVisualStyleBackColor = false;
+            btnEliminarCombi.Click += btnEliminarCombi_Click;
+            
+            // 
+            // groupBoxPasajeros
+            // 
+            groupBoxPasajeros.BackColor = Color.FromArgb(255, 250, 240);
+            groupBoxPasajeros.Controls.Add(lblInfoCombi);
+            groupBoxPasajeros.Controls.Add(lstPasajeros);
+            groupBoxPasajeros.Controls.Add(btnQuitarPasajero);
+            groupBoxPasajeros.Controls.Add(btnIniciarViaje);
+            groupBoxPasajeros.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBoxPasajeros.ForeColor = Color.FromArgb(184, 134, 11);
+            groupBoxPasajeros.Location = new Point(240, 45);
+            groupBoxPasajeros.Name = "groupBoxPasajeros";
+            groupBoxPasajeros.Size = new Size(420, 380);
+            groupBoxPasajeros.TabIndex = 2;
+            groupBoxPasajeros.TabStop = false;
+            groupBoxPasajeros.Text = "PASAJEROS EN ESPERA";
+            
+            // 
+            // lblInfoCombi
+            // 
+            lblInfoCombi.Font = new Font("Segoe UI", 8F);
+            lblInfoCombi.ForeColor = Color.Black;
+            lblInfoCombi.Location = new Point(10, 20);
+            lblInfoCombi.Name = "lblInfoCombi";
+            lblInfoCombi.Size = new Size(400, 45);
+            lblInfoCombi.TabIndex = 0;
+            lblInfoCombi.Text = "Seleccione una combi";
+            
+            // 
+            // lstPasajeros
+            // 
+            lstPasajeros.Font = new Font("Segoe UI", 8F);
+            lstPasajeros.FormattingEnabled = true;
+            lstPasajeros.ItemHeight = 13;
+            lstPasajeros.Location = new Point(10, 70);
+            lstPasajeros.Name = "lstPasajeros";
+            lstPasajeros.Size = new Size(400, 221);
+            lstPasajeros.TabIndex = 1;
+            
+            // 
+            // btnQuitarPasajero
+            // 
+            btnQuitarPasajero.BackColor = Color.FromArgb(255, 152, 0);
+            btnQuitarPasajero.Cursor = Cursors.Hand;
+            btnQuitarPasajero.FlatStyle = FlatStyle.Flat;
+            btnQuitarPasajero.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnQuitarPasajero.ForeColor = Color.White;
+            btnQuitarPasajero.Location = new Point(10, 300);
+            btnQuitarPasajero.Name = "btnQuitarPasajero";
+            btnQuitarPasajero.Size = new Size(400, 30);
+            btnQuitarPasajero.TabIndex = 2;
+            btnQuitarPasajero.Text = "- Quitar Pasajero Seleccionado";
+            btnQuitarPasajero.UseVisualStyleBackColor = false;
+            btnQuitarPasajero.Click += btnQuitarPasajero_Click;
+            
+            // 
+            // btnIniciarViaje
+            // 
+            btnIniciarViaje.BackColor = Color.FromArgb(46, 125, 50);
+            btnIniciarViaje.Cursor = Cursors.Hand;
+            btnIniciarViaje.FlatStyle = FlatStyle.Flat;
+            btnIniciarViaje.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnIniciarViaje.ForeColor = Color.White;
+            btnIniciarViaje.Location = new Point(10, 335);
+            btnIniciarViaje.Name = "btnIniciarViaje";
+            btnIniciarViaje.Size = new Size(400, 35);
+            btnIniciarViaje.TabIndex = 3;
+            btnIniciarViaje.Text = "🚀 Iniciar Viaje";
+            btnIniciarViaje.UseVisualStyleBackColor = false;
+            btnIniciarViaje.Click += btnIniciarViaje_Click;
+            
+            // 
+            // groupBoxAgregar
+            // 
+            groupBoxAgregar.BackColor = Color.FromArgb(240, 255, 240);
+            groupBoxAgregar.Controls.Add(lblNombrePasajero);
+            groupBoxAgregar.Controls.Add(txtPasajero);
+            groupBoxAgregar.Controls.Add(lblTipoPasajero);
+            groupBoxAgregar.Controls.Add(cmbTipoPasajero);
+            groupBoxAgregar.Controls.Add(btnAgregarPasajero);
+            groupBoxAgregar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBoxAgregar.ForeColor = Color.FromArgb(34, 139, 34);
+            groupBoxAgregar.Location = new Point(670, 45);
+            groupBoxAgregar.Name = "groupBoxAgregar";
+            groupBoxAgregar.Size = new Size(270, 200);
+            groupBoxAgregar.TabIndex = 3;
+            groupBoxAgregar.TabStop = false;
+            groupBoxAgregar.Text = "AGREGAR PASAJERO";
+            
+            // 
+            // lblNombrePasajero
+            // 
+            lblNombrePasajero.AutoSize = true;
+            lblNombrePasajero.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblNombrePasajero.Location = new Point(10, 25);
+            lblNombrePasajero.Name = "lblNombrePasajero";
+            lblNombrePasajero.Size = new Size(50, 13);
+            lblNombrePasajero.TabIndex = 0;
+            lblNombrePasajero.Text = "Nombre:";
+            
+            // 
+            // txtPasajero
+            // 
+            txtPasajero.Font = new Font("Segoe UI", 9F);
+            txtPasajero.Location = new Point(10, 42);
+            txtPasajero.Name = "txtPasajero";
+            txtPasajero.Size = new Size(250, 23);
+            txtPasajero.TabIndex = 1;
+            
             // 
             // lblTipoPasajero
             // 
             lblTipoPasajero.AutoSize = true;
-            lblTipoPasajero.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblTipoPasajero.ForeColor = Color.FromArgb(0, 102, 204);
-            lblTipoPasajero.Location = new Point(30, 103);
+            lblTipoPasajero.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblTipoPasajero.Location = new Point(10, 75);
             lblTipoPasajero.Name = "lblTipoPasajero";
-            lblTipoPasajero.Size = new Size(43, 19);
-            lblTipoPasajero.TabIndex = 6;
+            lblTipoPasajero.Size = new Size(32, 13);
+            lblTipoPasajero.TabIndex = 2;
             lblTipoPasajero.Text = "Tipo:";
+            
             // 
-            // lstEnEspera
+            // cmbTipoPasajero
             // 
-            lstEnEspera.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            lstEnEspera.Font = new Font("Segoe UI", 9F);
-            lstEnEspera.ForeColor = Color.Black;
-            lstEnEspera.FormattingEnabled = true;
-            lstEnEspera.ItemHeight = 15;
-            lstEnEspera.Location = new Point(30, 185);
-            lstEnEspera.Name = "lstEnEspera";
-            lstEnEspera.Size = new Size(460, 154);
-            lstEnEspera.TabIndex = 5;
+            cmbTipoPasajero.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipoPasajero.Font = new Font("Segoe UI", 9F);
+            cmbTipoPasajero.FormattingEnabled = true;
+            cmbTipoPasajero.Location = new Point(10, 92);
+            cmbTipoPasajero.Name = "cmbTipoPasajero";
+            cmbTipoPasajero.Size = new Size(250, 23);
+            cmbTipoPasajero.TabIndex = 3;
+            
             // 
-            // btnSubir
+            // btnAgregarPasajero
             // 
-            btnSubir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnSubir.BackColor = Color.FromArgb(46, 125, 50);
-            btnSubir.Cursor = Cursors.Hand;
-            btnSubir.FlatStyle = FlatStyle.Flat;
-            btnSubir.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnSubir.ForeColor = Color.White;
-            btnSubir.Location = new Point(30, 355);
-            btnSubir.Name = "btnSubir";
-            btnSubir.Size = new Size(460, 50);
-            btnSubir.TabIndex = 4;
-            btnSubir.Text = ">> Subir a la combi (Iniciar Viaje)";
-            btnSubir.UseVisualStyleBackColor = false;
-            btnSubir.Click += btnSubir_Click;
-            // 
-            // btnAnotar
-            // 
-            btnAnotar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAnotar.BackColor = Color.FromArgb(0, 102, 204);
-            btnAnotar.Cursor = Cursors.Hand;
-            btnAnotar.FlatStyle = FlatStyle.Flat;
-            btnAnotar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnAnotar.ForeColor = Color.White;
-            btnAnotar.Location = new Point(330, 67);
-            btnAnotar.Name = "btnAnotar";
-            btnAnotar.Size = new Size(160, 58);
-            btnAnotar.TabIndex = 3;
-            btnAnotar.Text = "Anotar";
-            btnAnotar.UseVisualStyleBackColor = false;
-            btnAnotar.Click += btnAnotar_Click;
-            // 
-            // txtPasajero
-            // 
-            txtPasajero.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtPasajero.Font = new Font("Segoe UI", 10F);
-            txtPasajero.ForeColor = Color.Black;
-            txtPasajero.Location = new Point(115, 67);
-            txtPasajero.Name = "txtPasajero";
-            txtPasajero.Size = new Size(200, 25);
-            txtPasajero.TabIndex = 2;
-            // 
-            // lblEnEspera
-            // 
-            lblEnEspera.AutoSize = true;
-            lblEnEspera.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblEnEspera.ForeColor = Color.FromArgb(0, 102, 204);
-            lblEnEspera.Location = new Point(30, 155);
-            lblEnEspera.Name = "lblEnEspera";
-            lblEnEspera.Size = new Size(76, 19);
-            lblEnEspera.TabIndex = 1;
-            lblEnEspera.Text = "En Espera:";
-            // 
-            // lblPasajero
-            // 
-            lblPasajero.AutoSize = true;
-            lblPasajero.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblPasajero.ForeColor = Color.FromArgb(0, 102, 204);
-            lblPasajero.Location = new Point(30, 70);
-            lblPasajero.Name = "lblPasajero";
-            lblPasajero.Size = new Size(71, 19);
-            lblPasajero.TabIndex = 0;
-            lblPasajero.Text = "Pasajero:";
-            // 
-            // lblTitulo
-            // 
-            lblTitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lblTitulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.FromArgb(0, 102, 204);
-            lblTitulo.Location = new Point(20, 15);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(720, 40);
-            lblTitulo.TabIndex = 1;
-            lblTitulo.Text = "SERVICIO DE COMBIS - Terminal Obelisco";
-            lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
+            btnAgregarPasajero.BackColor = Color.FromArgb(0, 102, 204);
+            btnAgregarPasajero.Cursor = Cursors.Hand;
+            btnAgregarPasajero.FlatStyle = FlatStyle.Flat;
+            btnAgregarPasajero.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnAgregarPasajero.ForeColor = Color.White;
+            btnAgregarPasajero.Location = new Point(10, 130);
+            btnAgregarPasajero.Name = "btnAgregarPasajero";
+            btnAgregarPasajero.Size = new Size(250, 55);
+            btnAgregarPasajero.TabIndex = 4;
+            btnAgregarPasajero.Text = "➕ Agregar Pasajero\na Combi Seleccionada";
+            btnAgregarPasajero.UseVisualStyleBackColor = false;
+            btnAgregarPasajero.Click += btnAgregarPasajero_Click;
+            
             // 
             // groupBoxEstadisticas
             // 
-            groupBoxEstadisticas.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBoxEstadisticas.BackColor = Color.FromArgb(255, 250, 240);
-            groupBoxEstadisticas.Controls.Add(lblRecaudacion);
-            groupBoxEstadisticas.Controls.Add(lblPasajerosHoy);
+            groupBoxEstadisticas.BackColor = Color.FromArgb(255, 248, 240);
             groupBoxEstadisticas.Controls.Add(lblViajesHoy);
-            groupBoxEstadisticas.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            groupBoxEstadisticas.Controls.Add(lblPasajerosHoy);
+            groupBoxEstadisticas.Controls.Add(lblRecaudacion);
+            groupBoxEstadisticas.Controls.Add(btnReporte);
+            groupBoxEstadisticas.Controls.Add(btnCerrar);
+            groupBoxEstadisticas.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             groupBoxEstadisticas.ForeColor = Color.FromArgb(184, 134, 11);
-            groupBoxEstadisticas.Location = new Point(560, 70);
+            groupBoxEstadisticas.Location = new Point(670, 255);
             groupBoxEstadisticas.Name = "groupBoxEstadisticas";
-            groupBoxEstadisticas.Size = new Size(180, 150);
-            groupBoxEstadisticas.TabIndex = 2;
+            groupBoxEstadisticas.Size = new Size(270, 170);
+            groupBoxEstadisticas.TabIndex = 4;
             groupBoxEstadisticas.TabStop = false;
-            groupBoxEstadisticas.Text = "ESTADISTICAS";
-            // 
-            // lblRecaudacion
-            // 
-            lblRecaudacion.Font = new Font("Segoe UI", 9F);
-            lblRecaudacion.ForeColor = Color.Black;
-            lblRecaudacion.Location = new Point(15, 100);
-            lblRecaudacion.Name = "lblRecaudacion";
-            lblRecaudacion.Size = new Size(150, 35);
-            lblRecaudacion.TabIndex = 2;
-            lblRecaudacion.Text = "Recaudacion:\r\n$0.00";
-            // 
-            // lblPasajerosHoy
-            // 
-            lblPasajerosHoy.Font = new Font("Segoe UI", 9F);
-            lblPasajerosHoy.ForeColor = Color.Black;
-            lblPasajerosHoy.Location = new Point(15, 65);
-            lblPasajerosHoy.Name = "lblPasajerosHoy";
-            lblPasajerosHoy.Size = new Size(150, 20);
-            lblPasajerosHoy.TabIndex = 1;
-            lblPasajerosHoy.Text = "Pasajeros: 0";
+            groupBoxEstadisticas.Text = "ESTADÍSTICAS DEL DÍA";
+            
             // 
             // lblViajesHoy
             // 
-            lblViajesHoy.Font = new Font("Segoe UI", 9F);
+            lblViajesHoy.Font = new Font("Segoe UI", 8F);
             lblViajesHoy.ForeColor = Color.Black;
-            lblViajesHoy.Location = new Point(15, 35);
+            lblViajesHoy.Location = new Point(10, 20);
             lblViajesHoy.Name = "lblViajesHoy";
-            lblViajesHoy.Size = new Size(150, 20);
+            lblViajesHoy.Size = new Size(250, 15);
             lblViajesHoy.TabIndex = 0;
-            lblViajesHoy.Text = "Viajes: 0";
+            lblViajesHoy.Text = "🚌 Viajes: 0";
+            
+            // 
+            // lblPasajerosHoy
+            // 
+            lblPasajerosHoy.Font = new Font("Segoe UI", 8F);
+            lblPasajerosHoy.ForeColor = Color.Black;
+            lblPasajerosHoy.Location = new Point(10, 38);
+            lblPasajerosHoy.Name = "lblPasajerosHoy";
+            lblPasajerosHoy.Size = new Size(250, 15);
+            lblPasajerosHoy.TabIndex = 1;
+            lblPasajerosHoy.Text = "👥 Pasajeros: 0";
+            
+            // 
+            // lblRecaudacion
+            // 
+            lblRecaudacion.Font = new Font("Segoe UI", 8F);
+            lblRecaudacion.ForeColor = Color.Black;
+            lblRecaudacion.Location = new Point(10, 56);
+            lblRecaudacion.Name = "lblRecaudacion";
+            lblRecaudacion.Size = new Size(250, 15);
+            lblRecaudacion.TabIndex = 2;
+            lblRecaudacion.Text = "💰 Recaudación: $0.00";
+            
             // 
             // btnReporte
             // 
-            btnReporte.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnReporte.BackColor = Color.FromArgb(255, 152, 0);
             btnReporte.Cursor = Cursors.Hand;
             btnReporte.FlatStyle = FlatStyle.Flat;
-            btnReporte.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnReporte.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
             btnReporte.ForeColor = Color.White;
-            btnReporte.Location = new Point(560, 240);
+            btnReporte.Location = new Point(10, 85);
             btnReporte.Name = "btnReporte";
-            btnReporte.Size = new Size(180, 50);
+            btnReporte.Size = new Size(250, 35);
             btnReporte.TabIndex = 3;
-            btnReporte.Text = "Generar Reporte\r\nDel Dia";
+            btnReporte.Text = "📄 Generar Reporte del Día";
             btnReporte.UseVisualStyleBackColor = false;
             btnReporte.Click += btnReporte_Click;
+            
             // 
             // btnCerrar
             // 
-            btnCerrar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCerrar.BackColor = Color.FromArgb(211, 47, 47);
+            btnCerrar.BackColor = Color.FromArgb(120, 120, 120);
             btnCerrar.Cursor = Cursors.Hand;
             btnCerrar.FlatStyle = FlatStyle.Flat;
-            btnCerrar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnCerrar.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(560, 450);
+            btnCerrar.Location = new Point(10, 125);
             btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(180, 50);
+            btnCerrar.Size = new Size(250, 35);
             btnCerrar.TabIndex = 4;
-            btnCerrar.Text = "Cerrar Aplicacion";
+            btnCerrar.Text = "❌ Cerrar Aplicación";
             btnCerrar.UseVisualStyleBackColor = false;
             btnCerrar.Click += btnCerrar_Click;
+            
             // 
-            // timerCombi
+            // timerCombis
             // 
-            timerCombi.Interval = 1000;
-            timerCombi.Tick += timerCombi_Tick;
+            timerCombis.Interval = 1000;
+            timerCombis.Tick += timerCombis_Tick;
+            
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(760, 520);
-            Controls.Add(btnCerrar);
-            Controls.Add(btnReporte);
+            ClientSize = new Size(950, 435);
             Controls.Add(groupBoxEstadisticas);
+            Controls.Add(groupBoxAgregar);
+            Controls.Add(groupBoxPasajeros);
+            Controls.Add(groupBoxCombis);
             Controls.Add(lblTitulo);
-            Controls.Add(groupBoxTerminal);
-            MinimumSize = new Size(776, 559);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Servicio de Combis - TP 12 Integración";
+            Text = "Sistema de Combis - Gestión Integrada";
             FormClosing += Form1_FormClosing;
             Load += Form1_Load;
-            groupBoxTerminal.ResumeLayout(false);
-            groupBoxTerminal.PerformLayout();
+            
+            groupBoxCombis.ResumeLayout(false);
+            groupBoxPasajeros.ResumeLayout(false);
+            groupBoxAgregar.ResumeLayout(false);
+            groupBoxAgregar.PerformLayout();
             groupBoxEstadisticas.ResumeLayout(false);
             ResumeLayout(false);
         }
 
-        #endregion
-
-        private GroupBox groupBoxTerminal;
-        private Label lblPasajero;
-        private Label lblEnEspera;
-        private TextBox txtPasajero;
-        private Button btnAnotar;
-        private Button btnSubir;
-        private ListBox lstEnEspera;
         private Label lblTitulo;
+        
+        // Panel combis
+        private GroupBox groupBoxCombis;
+        private ListBox lstCombis;
+        private Button btnNuevaCombi;
+        private Button btnEliminarCombi;
+        
+        // Panel pasajeros
+        private GroupBox groupBoxPasajeros;
+        private Label lblInfoCombi;
+        private ListBox lstPasajeros;
+        private Button btnQuitarPasajero;
+        private Button btnIniciarViaje;
+        
+        // Panel agregar
+        private GroupBox groupBoxAgregar;
+        private Label lblNombrePasajero;
+        private TextBox txtPasajero;
         private Label lblTipoPasajero;
         private ComboBox cmbTipoPasajero;
-        private Label lblTiempo;
-        private Label lblTiempoRestante;
+        private Button btnAgregarPasajero;
+        
+        // Panel estadísticas
         private GroupBox groupBoxEstadisticas;
         private Label lblViajesHoy;
         private Label lblPasajerosHoy;
         private Label lblRecaudacion;
         private Button btnReporte;
         private Button btnCerrar;
-        private System.Windows.Forms.Timer timerCombi;
+        
+        // Timer
+        private System.Windows.Forms.Timer timerCombis;
     }
 }
