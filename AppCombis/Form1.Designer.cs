@@ -13,6 +13,8 @@
             base.Dispose(disposing);
         }
 
+        #region Windows Form Designer generated code
+
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
@@ -52,6 +54,10 @@
             // Timer
             timerCombis = new System.Windows.Forms.Timer(components);
             
+            groupBoxCombis.SuspendLayout();
+            groupBoxPasajeros.SuspendLayout();
+            groupBoxAgregar.SuspendLayout();
+            groupBoxEstadisticas.SuspendLayout();
             SuspendLayout();
             
             // 
@@ -93,9 +99,8 @@
             lstCombis.Name = "lstCombis";
             lstCombis.Size = new Size(200, 290);
             lstCombis.TabIndex = 0;
-            lstCombis.SelectedIndexChanged += lstCombis_SelectedIndexChanged;
             lstCombis.SelectionMode = SelectionMode.One;
-            lstCombis.DrawMode = DrawMode.Normal;
+            lstCombis.SelectedIndexChanged += lstCombis_SelectedIndexChanged;
             
             // 
             // btnNuevaCombi
@@ -168,7 +173,6 @@
             lstPasajeros.Size = new Size(400, 221);
             lstPasajeros.TabIndex = 1;
             lstPasajeros.SelectionMode = SelectionMode.One;
-            lstPasajeros.DrawMode = DrawMode.Normal;
             
             // 
             // btnQuitarPasajero
@@ -294,7 +298,7 @@
             groupBoxEstadisticas.Size = new Size(270, 170);
             groupBoxEstadisticas.TabIndex = 4;
             groupBoxEstadisticas.TabStop = false;
-            groupBoxEstadisticas.Text = "ESTADÍSTICAS DEL DÍA";
+            groupBoxEstadisticas.Text = "ESTADISTICAS DEL DIA";
             
             // 
             // lblViajesHoy
@@ -383,7 +387,7 @@
             MaximizeBox = false;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Sistema de Combis - Gestión Integrada";
+            Text = "Sistema de Combis - Gestion Integrada";
             FormClosing += Form1_FormClosing;
             Load += Form1_Load;
             
@@ -394,6 +398,8 @@
             groupBoxEstadisticas.ResumeLayout(false);
             ResumeLayout(false);
         }
+
+        #endregion
 
         private Label lblTitulo;
         
