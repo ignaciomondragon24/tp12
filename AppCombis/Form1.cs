@@ -266,12 +266,15 @@ namespace AppCombis
 
             int cantidadPasajeros = (int)numCantidadPasajeros.Value;
             
-            // Verifico capacidad disponible
-            int lugaresDisponibles = combiSeleccionada.Capacidad - combiSeleccionada.FilaDeEspera.Count;
+            // Verifico capacidad disponible ANTES de empezar a agregar
+            int pasajerosActuales = combiSeleccionada.FilaDeEspera.Count;
+            int lugaresDisponibles = combiSeleccionada.Capacidad - pasajerosActuales;
+            
             if (cantidadPasajeros > lugaresDisponibles)
             {
                 MessageBox.Show(
                     $"No hay suficiente espacio en la combi '{combiSeleccionada.Nombre}'.\n\n" +
+                    $"Pasajeros actuales: {pasajerosActuales}\n" +
                     $"Lugares disponibles: {lugaresDisponibles}\n" +
                     $"Pasajeros solicitados: {cantidadPasajeros}\n\n" +
                     $"Capacidad total: {combiSeleccionada.Capacidad}",
@@ -289,35 +292,45 @@ namespace AppCombis
                 _ => Pasajero.TipoPasajero.Normal
             };
 
-            // Contador de pasajeros agregados exitosamente
-            int agregados = 0;
+            // Guardo si es el primer pasajero ANTES de empezar a agregar
             bool esPrimerPasajero = combiSeleccionada.FilaDeEspera.Count == 0;
 
-            // Agrego el pasajero principal (quien reserva)
-            var pasajeroPrincipal = new Pasajero(nombre, tipo, esReservaPrincipal: true);
-            if (combiSeleccionada.AgregarPasajero(pasajeroPrincipal))
-            {
-                agregados++;
-            }
+            // Creo lista de todos los pasajeros a agregar
+            List<Pasajero> pasajerosAAgregar = new List<Pasajero>();
 
-            // Agrego los acompañantes (si los hay)
+            // Agrego el pasajero principal
+            pasajerosAAgregar.Add(new Pasajero(nombre, tipo, esReservaPrincipal: true));
+
+            // Agrego los acompañantes
             for (int i = 1; i < cantidadPasajeros; i++)
             {
-                var acompanante = new Pasajero(
-                    nombre: nombre,  // Mismo nombre base
-                    tipo: tipo,      // Mismo tipo
+                pasajerosAAgregar.Add(new Pasajero(
+                    nombre: nombre,
+                    tipo: tipo,
                     esReservaPrincipal: false,
                     nombreReservante: nombre,
                     numeroAcompanante: i
-                );
+                ));
+            }
 
-                if (combiSeleccionada.AgregarPasajero(acompanante))
+            // Ahora agrego TODOS los pasajeros a la combi
+            int agregados = 0;
+            foreach (var pasajero in pasajerosAAgregar)
+            {
+                if (combiSeleccionada.AgregarPasajero(pasajero))
                 {
                     agregados++;
                 }
                 else
                 {
-                    break; // Si no se pudo agregar, salgo del loop
+                    // Si falla alguno, muestro error y salgo
+                    MessageBox.Show(
+                        $"ERROR: Solo se pudieron agregar {agregados} de {cantidadPasajeros} pasajeros.\n" +
+                        $"Esto no deberia ocurrir. Contacte al soporte.",
+                        "Error inesperado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    break;
                 }
             }
 
@@ -333,19 +346,19 @@ namespace AppCombis
             // Verifico si la combi llegó a capacidad máxima
             bool combiLlena = combiSeleccionada.FilaDeEspera.Count >= combiSeleccionada.Capacidad;
 
-            // Muestro mensaje de confirmación
+            // Muestro mensaje de confirmación solo si se agregaron TODOS
             if (agregados == cantidadPasajeros)
             {
-                decimal recaudacionTotal = agregados * pasajeroPrincipal.Tarifa;
+                decimal recaudacionTotal = agregados * pasajerosAAgregar[0].Tarifa;
                 
                 string mensaje;
                 if (cantidadPasajeros == 1)
                 {
                     // Mensaje para un solo pasajero
                     mensaje = $"Pasajero agregado\n\n" +
-                             $"Nombre: {pasajeroPrincipal.Nombre}\n" +
-                             $"Tipo: {pasajeroPrincipal.ObtenerDescripcionTipo()}\n" +
-                             $"Tarifa: ${pasajeroPrincipal.Tarifa}\n\n" +
+                             $"Nombre: {pasajerosAAgregar[0].Nombre}\n" +
+                             $"Tipo: {pasajerosAAgregar[0].ObtenerDescripcionTipo()}\n" +
+                             $"Tarifa: ${pasajerosAAgregar[0].Tarifa}\n\n" +
                              $"Combi: {combiSeleccionada.Nombre}\n" +
                              $"Pasajeros en combi: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad}";
                 }
@@ -354,11 +367,11 @@ namespace AppCombis
                     // Mensaje para reserva grupal
                     mensaje = $"RESERVA GRUPAL EXITOSA\n\n" +
                              $"Reservante: {nombre}\n" +
-                             $"Tipo: {pasajeroPrincipal.ObtenerDescripcionTipo()}\n" +
+                             $"Tipo: {pasajerosAAgregar[0].ObtenerDescripcionTipo()}\n" +
                              $"Cantidad total: {cantidadPasajeros} personas\n" +
                              $"  - 1 pasajero principal: {nombre}\n" +
                              $"  - {cantidadPasajeros - 1} acompañante(s): {nombre} #1, #2...\n\n" +
-                             $"Tarifa por persona: ${pasajeroPrincipal.Tarifa}\n" +
+                             $"Tarifa por persona: ${pasajerosAAgregar[0].Tarifa}\n" +
                              $"Total a pagar: ${recaudacionTotal}\n\n" +
                              $"Combi: {combiSeleccionada.Nombre}\n" +
                              $"Pasajeros en combi: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad}";
@@ -387,15 +400,6 @@ namespace AppCombis
                 {
                     IniciarViajeAutomatico(combiSeleccionada, "CAPACIDAD MAXIMA ALCANZADA");
                 }
-            }
-            else
-            {
-                MessageBox.Show(
-                    $"Solo se pudieron agregar {agregados} de {cantidadPasajeros} pasajeros.\n" +
-                    $"La combi no tiene suficiente capacidad.",
-                    "Agregado parcial",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
             }
         }
 
