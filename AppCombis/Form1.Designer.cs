@@ -64,7 +64,7 @@
             lblTitulo.Name = "lblTitulo";
             lblTitulo.Size = new Size(950, 35);
             lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "🚌 SISTEMA DE GESTIÓN DE COMBIS - Terminal Obelisco";
+            lblTitulo.Text = "SISTEMA DE GESTION DE COMBIS - Terminal Obelisco";
             lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
             
             // 
@@ -94,6 +94,8 @@
             lstCombis.Size = new Size(200, 290);
             lstCombis.TabIndex = 0;
             lstCombis.SelectedIndexChanged += lstCombis_SelectedIndexChanged;
+            lstCombis.SelectionMode = SelectionMode.One;
+            lstCombis.DrawMode = DrawMode.Normal;
             
             // 
             // btnNuevaCombi
@@ -165,6 +167,8 @@
             lstPasajeros.Name = "lstPasajeros";
             lstPasajeros.Size = new Size(400, 221);
             lstPasajeros.TabIndex = 1;
+            lstPasajeros.SelectionMode = SelectionMode.One;
+            lstPasajeros.DrawMode = DrawMode.Normal;
             
             // 
             // btnQuitarPasajero
@@ -194,7 +198,7 @@
             btnIniciarViaje.Name = "btnIniciarViaje";
             btnIniciarViaje.Size = new Size(400, 35);
             btnIniciarViaje.TabIndex = 3;
-            btnIniciarViaje.Text = "🚀 Iniciar Viaje";
+            btnIniciarViaje.Text = ">> INICIAR VIAJE";
             btnIniciarViaje.UseVisualStyleBackColor = false;
             btnIniciarViaje.Click += btnIniciarViaje_Click;
             
@@ -270,7 +274,7 @@
             btnAgregarPasajero.Name = "btnAgregarPasajero";
             btnAgregarPasajero.Size = new Size(250, 55);
             btnAgregarPasajero.TabIndex = 4;
-            btnAgregarPasajero.Text = "➕ Agregar Pasajero\na Combi Seleccionada";
+            btnAgregarPasajero.Text = "+ AGREGAR PASAJERO\na Combi Seleccionada";
             btnAgregarPasajero.UseVisualStyleBackColor = false;
             btnAgregarPasajero.Click += btnAgregarPasajero_Click;
             
@@ -301,7 +305,7 @@
             lblViajesHoy.Name = "lblViajesHoy";
             lblViajesHoy.Size = new Size(250, 15);
             lblViajesHoy.TabIndex = 0;
-            lblViajesHoy.Text = "🚌 Viajes: 0";
+            lblViajesHoy.Text = "Viajes: 0";
             
             // 
             // lblPasajerosHoy
@@ -312,7 +316,7 @@
             lblPasajerosHoy.Name = "lblPasajerosHoy";
             lblPasajerosHoy.Size = new Size(250, 15);
             lblPasajerosHoy.TabIndex = 1;
-            lblPasajerosHoy.Text = "👥 Pasajeros: 0";
+            lblPasajerosHoy.Text = "Pasajeros: 0";
             
             // 
             // lblRecaudacion
@@ -323,7 +327,7 @@
             lblRecaudacion.Name = "lblRecaudacion";
             lblRecaudacion.Size = new Size(250, 15);
             lblRecaudacion.TabIndex = 2;
-            lblRecaudacion.Text = "💰 Recaudación: $0.00";
+            lblRecaudacion.Text = "Recaudacion: $0.00";
             
             // 
             // btnReporte
@@ -337,7 +341,7 @@
             btnReporte.Name = "btnReporte";
             btnReporte.Size = new Size(250, 35);
             btnReporte.TabIndex = 3;
-            btnReporte.Text = "📄 Generar Reporte del Día";
+            btnReporte.Text = "Generar Reporte del Dia";
             btnReporte.UseVisualStyleBackColor = false;
             btnReporte.Click += btnReporte_Click;
             
@@ -353,7 +357,7 @@
             btnCerrar.Name = "btnCerrar";
             btnCerrar.Size = new Size(250, 35);
             btnCerrar.TabIndex = 4;
-            btnCerrar.Text = "❌ Cerrar Aplicación";
+            btnCerrar.Text = "Cerrar Aplicacion";
             btnCerrar.UseVisualStyleBackColor = false;
             btnCerrar.Click += btnCerrar_Click;
             

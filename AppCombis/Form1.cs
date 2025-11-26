@@ -52,9 +52,9 @@ namespace AppCombis
         private void InicializarTiposPasajero()
         {
             cmbTipoPasajero.Items.Clear();
-            cmbTipoPasajero.Items.Add("?? Normal - $500");
-            cmbTipoPasajero.Items.Add("?? Estudiante - $250");
-            cmbTipoPasajero.Items.Add("?? Jubilado - Gratis");
+            cmbTipoPasajero.Items.Add("[N] Normal - $500");
+            cmbTipoPasajero.Items.Add("[E] Estudiante - $250");
+            cmbTipoPasajero.Items.Add("[J] Jubilado - Gratis");
             cmbTipoPasajero.SelectedIndex = 0;
         }
 
@@ -191,7 +191,7 @@ namespace AppCombis
                 ActualizarListaCombis();
 
                 MessageBox.Show(
-                    $"? Combi creada exitosamente!\n\n" +
+                    $"Combi creada exitosamente!\n\n" +
                     $"Nombre: {nuevaCombi.Nombre}\n" +
                     $"Destino: {nuevaCombi.Destino}\n" +
                     $"Capacidad: {nuevaCombi.Capacidad} pasajeros",
@@ -258,7 +258,7 @@ namespace AppCombis
             string nombre = txtPasajero.Text.Trim();
             if (string.IsNullOrEmpty(nombre))
             {
-                MessageBox.Show("Ingrese el nombre del pasajero.", "Campo vacío",
+                MessageBox.Show("Ingrese el nombre del pasajero.", "Campo vacio",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPasajero.Focus();
                 return;
@@ -267,7 +267,7 @@ namespace AppCombis
             if (combiSeleccionada.FilaDeEspera.Count >= combiSeleccionada.Capacidad)
             {
                 MessageBox.Show(
-                    $"? La combi '{combiSeleccionada.Nombre}' está llena.\n" +
+                    $"La combi '{combiSeleccionada.Nombre}' esta llena.\n" +
                     $"Capacidad: {combiSeleccionada.Capacidad} pasajeros.",
                     "Combi llena",
                     MessageBoxButtons.OK,
@@ -297,12 +297,12 @@ namespace AppCombis
                 if (combiSeleccionada.FilaDeEspera.Count == 1)
                 {
                     MessageBox.Show(
-                        $"? PRIMER PASAJERO ANOTADO\n\n" +
-                        $"?? Timer iniciado: 20:00 minutos\n" +
-                        $"?? Combi: {combiSeleccionada.Nombre}\n" +
-                        $"?? Destino: {combiSeleccionada.Destino}\n" +
-                        $"?? Pasajero: {pasajero.Nombre} ({pasajero.ObtenerDescripcionTipo()})\n" +
-                        $"?? Tarifa: ${pasajero.Tarifa}",
+                        $"PRIMER PASAJERO ANOTADO\n\n" +
+                        $"Timer iniciado: 20:00 minutos\n" +
+                        $"Combi: {combiSeleccionada.Nombre}\n" +
+                        $"Destino: {combiSeleccionada.Destino}\n" +
+                        $"Pasajero: {pasajero.Nombre} ({pasajero.ObtenerDescripcionTipo()})\n" +
+                        $"Tarifa: ${pasajero.Tarifa}",
                         "Timer Iniciado",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
@@ -310,7 +310,7 @@ namespace AppCombis
                 else
                 {
                     MessageBox.Show(
-                        $"? Pasajero agregado\n\n" +
+                        $"Pasajero agregado\n\n" +
                         $"Nombre: {pasajero.Nombre}\n" +
                         $"Tipo: {pasajero.ObtenerDescripcionTipo()}\n" +
                         $"Tarifa: ${pasajero.Tarifa}\n\n" +
@@ -346,7 +346,7 @@ namespace AppCombis
             var pasajero = pasajeros[lstPasajeros.SelectedIndex];
 
             var resultado = MessageBox.Show(
-                $"¿Quitar a '{pasajero.Nombre}' de la combi '{combiSeleccionada.Nombre}'?",
+                $"Quitar a '{pasajero.Nombre}' de la combi '{combiSeleccionada.Nombre}'?",
                 "Confirmar",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -358,7 +358,7 @@ namespace AppCombis
                     ActualizarListaCombis();
                     ActualizarListaPasajeros();
 
-                    MessageBox.Show($"? Pasajero '{pasajero.Nombre}' quitado.", "Quitado",
+                    MessageBox.Show($"Pasajero '{pasajero.Nombre}' quitado.", "Quitado",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -381,11 +381,11 @@ namespace AppCombis
             }
 
             var resultado = MessageBox.Show(
-                $"?? ¿Iniciar viaje?\n\n" +
+                $"Iniciar viaje?\n\n" +
                 $"Combi: {combiSeleccionada.Nombre}\n" +
                 $"Destino: {combiSeleccionada.Destino}\n" +
                 $"Pasajeros: {combiSeleccionada.FilaDeEspera.Count}\n" +
-                $"Recaudación: ${combiSeleccionada.RecaudacionEnEspera}",
+                $"Recaudacion: ${combiSeleccionada.RecaudacionEnEspera}",
                 "Confirmar Viaje",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -437,13 +437,13 @@ namespace AppCombis
                 estadisticas.RegistrarViaje(pasajeros);
 
                 MessageBox.Show(
-                    $"? TIEMPO AGOTADO (20 minutos)\n\n" +
+                    $"TIEMPO AGOTADO (20 minutos)\n\n" +
                     $"Combi: {combi.Nombre}\n" +
                     $"Destino: {combi.Destino}\n" +
                     $"Pasajeros: {pasajeros.Count}\n" +
-                    $"Recaudación: ${pasajeros.Sum(p => p.Tarifa)}\n\n" +
-                    $"La combi partió automáticamente.",
-                    "Viaje Automático",
+                    $"Recaudacion: ${pasajeros.Sum(p => p.Tarifa)}\n\n" +
+                    $"La combi partio automaticamente.",
+                    "Viaje Automatico",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
@@ -492,14 +492,14 @@ namespace AppCombis
             var (normales, estudiantes, jubilados) = combiSeleccionada.ContarPorTipo();
             
             string estadoTexto = combiSeleccionada.Estado == Combi.EstadoCombi.EnEspera && combiSeleccionada.FilaDeEspera.Count > 0
-                ? $"?? {combiSeleccionada.TiempoRestanteFormateado}"
+                ? $"Timer: {combiSeleccionada.TiempoRestanteFormateado}"
                 : "Esperando pasajeros";
 
             lblInfoCombi.Text =
-                $"?? {combiSeleccionada.Nombre} | ?? {combiSeleccionada.Destino}\n" +
-                $"?? Pasajeros: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad} | " +
-                $"?? ${combiSeleccionada.RecaudacionEnEspera:N2}\n" +
-                $"?? N:{normales} | ?? E:{estudiantes} | ?? J:{jubilados} | {estadoTexto}";
+                $"Combi: {combiSeleccionada.Nombre} | Destino: {combiSeleccionada.Destino}\n" +
+                $"Pasajeros: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad} | " +
+                $"Recaudacion: ${combiSeleccionada.RecaudacionEnEspera:N2}\n" +
+                $"N:{normales} | E:{estudiantes} | J:{jubilados} | {estadoTexto}";
 
             groupBoxPasajeros.Text = $"PASAJEROS - {combiSeleccionada.Nombre}";
 
@@ -513,16 +513,16 @@ namespace AppCombis
             foreach (var pasajero in combiSeleccionada.FilaDeEspera)
             {
                 int minutosEspera = (int)(DateTime.Now - pasajero.HoraAnotacion).TotalMinutes;
-                lstPasajeros.Items.Add($"{pos}. {pasajero} | ?? {minutosEspera} min");
+                lstPasajeros.Items.Add($"{pos}. {pasajero} | Espera: {minutosEspera} min");
                 pos++;
             }
         }
 
         private void ActualizarEstadisticas()
         {
-            lblViajesHoy.Text = $"?? Viajes: {estadisticas.TotalViajes}";
-            lblPasajerosHoy.Text = $"?? Pasajeros: {estadisticas.TotalPasajeros}";
-            lblRecaudacion.Text = $"?? Recaudación: ${estadisticas.RecaudacionTotal:N2}";
+            lblViajesHoy.Text = $"Viajes: {estadisticas.TotalViajes}";
+            lblPasajerosHoy.Text = $"Pasajeros: {estadisticas.TotalPasajeros}";
+            lblRecaudacion.Text = $"Recaudacion: ${estadisticas.RecaudacionTotal:N2}";
         }
 
         // ============================================
@@ -534,13 +534,13 @@ namespace AppCombis
             var sb = new System.Text.StringBuilder();
 
             sb.AppendLine("=============================================");
-            sb.AppendLine("         ?? VIAJE INICIADO");
+            sb.AppendLine("         VIAJE INICIADO");
             sb.AppendLine("=============================================");
             sb.AppendLine();
-            sb.AppendLine($"?? Combi: {nombreCombi}");
-            sb.AppendLine($"?? Destino: {destino}");
-            sb.AppendLine($"?? Hora salida: {DateTime.Now:HH:mm:ss}");
-            sb.AppendLine($"?? Pasajeros: {pasajeros.Count}");
+            sb.AppendLine($"Combi: {nombreCombi}");
+            sb.AppendLine($"Destino: {destino}");
+            sb.AppendLine($"Hora salida: {DateTime.Now:HH:mm:ss}");
+            sb.AppendLine($"Pasajeros: {pasajeros.Count}");
             sb.AppendLine();
 
             int normales = pasajeros.Count(p => p.Tipo == Pasajero.TipoPasajero.Normal);
@@ -550,13 +550,13 @@ namespace AppCombis
             sb.AppendLine("---------------------------------------------");
             sb.AppendLine(" DESGLOSE:");
             sb.AppendLine("---------------------------------------------");
-            sb.AppendLine($" ?? Normales:    {normales}");
-            sb.AppendLine($" ?? Estudiantes: {estudiantes}");
-            sb.AppendLine($" ?? Jubilados:   {jubilados}");
+            sb.AppendLine($" [N] Normales:    {normales}");
+            sb.AppendLine($" [E] Estudiantes: {estudiantes}");
+            sb.AppendLine($" [J] Jubilados:   {jubilados}");
             sb.AppendLine();
 
             decimal recaudacion = pasajeros.Sum(p => p.Tarifa);
-            sb.AppendLine($" ?? RECAUDACIÓN: ${recaudacion:N2}");
+            sb.AppendLine($" RECAUDACION: ${recaudacion:N2}");
             sb.AppendLine();
             
             sb.AppendLine(" PASAJEROS A BORDO:");
@@ -569,7 +569,7 @@ namespace AppCombis
             
             sb.AppendLine();
             sb.AppendLine("=============================================");
-            sb.AppendLine("   ¡Buen viaje! ???");
+            sb.AppendLine("   Buen viaje!");
             sb.AppendLine("=============================================");
 
             MessageBox.Show(sb.ToString(), "Detalles del Viaje",
@@ -588,7 +588,7 @@ namespace AppCombis
                 estadisticas.GuardarReporte(nombreArchivo);
 
                 var resultado = MessageBox.Show(
-                    $"?? REPORTE GENERADO\n\n{nombreArchivo}\n\n¿Desea abrirlo?",
+                    $"REPORTE GENERADO\n\n{nombreArchivo}\n\nDesea abrirlo?",
                     "Reporte Generado",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information);

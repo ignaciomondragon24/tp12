@@ -233,19 +233,19 @@ namespace AppCombis
         // Representación en texto para el ListBox
         public override string ToString()
         {
-            string info = $"?? {Nombre}";
+            string info = $"Combi: {Nombre}";
             
             if (Estado == EstadoCombi.EnEspera && FilaDeEspera.Count > 0)
             {
                 info += $" [{TiempoRestanteFormateado}]";
             }
             
-            info += $"\n   ? {Destino}";
-            info += $"\n   ?? {FilaDeEspera.Count}/{Capacidad}";
+            info += $"\n   Destino: {Destino}";
+            info += $"\n   Pasajeros: {FilaDeEspera.Count}/{Capacidad}";
             
             if (FilaDeEspera.Count > 0)
             {
-                info += $" | ?? ${RecaudacionEnEspera}";
+                info += $" | Recaudacion: ${RecaudacionEnEspera}";
             }
 
             return info;
