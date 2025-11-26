@@ -464,7 +464,9 @@ namespace AppCombis
 
         private void ActualizarListaCombis()
         {
+            // Guardo el índice seleccionado y la combi actual
             int indiceSeleccionado = lstCombis.SelectedIndex;
+            
             lstCombis.Items.Clear();
 
             foreach (var combi in combis)
@@ -472,6 +474,7 @@ namespace AppCombis
                 lstCombis.Items.Add(combi.ToString());
             }
 
+            // Restauro la selección
             if (indiceSeleccionado >= 0 && indiceSeleccionado < lstCombis.Items.Count)
             {
                 lstCombis.SelectedIndex = indiceSeleccionado;
@@ -480,6 +483,9 @@ namespace AppCombis
 
         private void ActualizarListaPasajeros()
         {
+            // Guardo el índice seleccionado actualmente
+            int indiceSeleccionado = lstPasajeros.SelectedIndex;
+            
             lstPasajeros.Items.Clear();
 
             if (combiSeleccionada == null)
@@ -515,6 +521,12 @@ namespace AppCombis
                 int minutosEspera = (int)(DateTime.Now - pasajero.HoraAnotacion).TotalMinutes;
                 lstPasajeros.Items.Add($"{pos}. {pasajero} | Espera: {minutosEspera} min");
                 pos++;
+            }
+
+            // Restauro la selección si todavía es válida
+            if (indiceSeleccionado >= 0 && indiceSeleccionado < lstPasajeros.Items.Count)
+            {
+                lstPasajeros.SelectedIndex = indiceSeleccionado;
             }
         }
 
