@@ -41,6 +41,8 @@
             txtPasajero = new TextBox();
             lblTipoPasajero = new Label();
             cmbTipoPasajero = new ComboBox();
+            lblCantidadPasajeros = new Label();
+            numCantidadPasajeros = new NumericUpDown();
             btnAgregarPasajero = new Button();
             
             // Panel inferior - Estadísticas y acciones
@@ -58,6 +60,7 @@
             groupBoxPasajeros.SuspendLayout();
             groupBoxAgregar.SuspendLayout();
             groupBoxEstadisticas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(numCantidadPasajeros)).BeginInit();
             SuspendLayout();
             
             // 
@@ -214,6 +217,8 @@
             groupBoxAgregar.Controls.Add(txtPasajero);
             groupBoxAgregar.Controls.Add(lblTipoPasajero);
             groupBoxAgregar.Controls.Add(cmbTipoPasajero);
+            groupBoxAgregar.Controls.Add(lblCantidadPasajeros);
+            groupBoxAgregar.Controls.Add(numCantidadPasajeros);
             groupBoxAgregar.Controls.Add(btnAgregarPasajero);
             groupBoxAgregar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             groupBoxAgregar.ForeColor = Color.FromArgb(34, 139, 34);
@@ -249,7 +254,7 @@
             // 
             lblTipoPasajero.AutoSize = true;
             lblTipoPasajero.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-            lblTipoPasajero.Location = new Point(10, 75);
+            lblTipoPasajero.Location = new Point(10, 70);
             lblTipoPasajero.Name = "lblTipoPasajero";
             lblTipoPasajero.Size = new Size(32, 13);
             lblTipoPasajero.TabIndex = 2;
@@ -261,10 +266,33 @@
             cmbTipoPasajero.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipoPasajero.Font = new Font("Segoe UI", 9F);
             cmbTipoPasajero.FormattingEnabled = true;
-            cmbTipoPasajero.Location = new Point(10, 92);
+            cmbTipoPasajero.Location = new Point(10, 87);
             cmbTipoPasajero.Name = "cmbTipoPasajero";
             cmbTipoPasajero.Size = new Size(250, 23);
             cmbTipoPasajero.TabIndex = 3;
+            
+            // 
+            // lblCantidadPasajeros
+            // 
+            lblCantidadPasajeros.AutoSize = true;
+            lblCantidadPasajeros.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblCantidadPasajeros.Location = new Point(10, 115);
+            lblCantidadPasajeros.Name = "lblCantidadPasajeros";
+            lblCantidadPasajeros.Size = new Size(150, 13);
+            lblCantidadPasajeros.TabIndex = 4;
+            lblCantidadPasajeros.Text = "Cantidad (incluyendose):";
+            
+            // 
+            // numCantidadPasajeros
+            // 
+            numCantidadPasajeros.Font = new Font("Segoe UI", 9F);
+            numCantidadPasajeros.Location = new Point(10, 132);
+            numCantidadPasajeros.Name = "numCantidadPasajeros";
+            numCantidadPasajeros.Size = new Size(80, 23);
+            numCantidadPasajeros.TabIndex = 5;
+            numCantidadPasajeros.Minimum = 1;
+            numCantidadPasajeros.Maximum = 10;
+            numCantidadPasajeros.Value = 1;
             
             // 
             // btnAgregarPasajero
@@ -274,11 +302,11 @@
             btnAgregarPasajero.FlatStyle = FlatStyle.Flat;
             btnAgregarPasajero.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAgregarPasajero.ForeColor = Color.White;
-            btnAgregarPasajero.Location = new Point(10, 130);
+            btnAgregarPasajero.Location = new Point(10, 160);
             btnAgregarPasajero.Name = "btnAgregarPasajero";
-            btnAgregarPasajero.Size = new Size(250, 55);
-            btnAgregarPasajero.TabIndex = 4;
-            btnAgregarPasajero.Text = "+ AGREGAR PASAJERO\na Combi Seleccionada";
+            btnAgregarPasajero.Size = new Size(250, 30);
+            btnAgregarPasajero.TabIndex = 6;
+            btnAgregarPasajero.Text = "+ AGREGAR";
             btnAgregarPasajero.UseVisualStyleBackColor = false;
             btnAgregarPasajero.Click += btnAgregarPasajero_Click;
             
@@ -396,6 +424,7 @@
             groupBoxAgregar.ResumeLayout(false);
             groupBoxAgregar.PerformLayout();
             groupBoxEstadisticas.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(numCantidadPasajeros)).EndInit();
             ResumeLayout(false);
         }
 
@@ -422,6 +451,8 @@
         private TextBox txtPasajero;
         private Label lblTipoPasajero;
         private ComboBox cmbTipoPasajero;
+        private Label lblCantidadPasajeros;
+        private NumericUpDown numCantidadPasajeros;
         private Button btnAgregarPasajero;
         
         // Panel estadísticas

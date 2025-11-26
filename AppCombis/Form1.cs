@@ -264,14 +264,20 @@ namespace AppCombis
                 return;
             }
 
-            if (combiSeleccionada.FilaDeEspera.Count >= combiSeleccionada.Capacidad)
+            int cantidadPasajeros = (int)numCantidadPasajeros.Value;
+            
+            // Verifico capacidad disponible
+            int lugaresDisponibles = combiSeleccionada.Capacidad - combiSeleccionada.FilaDeEspera.Count;
+            if (cantidadPasajeros > lugaresDisponibles)
             {
                 MessageBox.Show(
-                    $"La combi '{combiSeleccionada.Nombre}' esta llena.\n" +
-                    $"Capacidad: {combiSeleccionada.Capacidad} pasajeros.",
-                    "Combi llena",
+                    $"No hay suficiente espacio en la combi '{combiSeleccionada.Nombre}'.\n\n" +
+                    $"Lugares disponibles: {lugaresDisponibles}\n" +
+                    $"Pasajeros solicitados: {cantidadPasajeros}\n\n" +
+                    $"Capacidad total: {combiSeleccionada.Capacidad}",
+                    "Capacidad insuficiente",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                    MessageBoxIcon.Warning);
                 return;
             }
 
@@ -283,43 +289,98 @@ namespace AppCombis
                 _ => Pasajero.TipoPasajero.Normal
             };
 
-            var pasajero = new Pasajero(nombre, tipo);
+            // Contador de pasajeros agregados exitosamente
+            int agregados = 0;
+            bool esPrimerPasajero = combiSeleccionada.FilaDeEspera.Count == 0;
 
-            if (combiSeleccionada.AgregarPasajero(pasajero))
+            // Agrego el pasajero principal (quien reserva)
+            var pasajeroPrincipal = new Pasajero(nombre, tipo, esReservaPrincipal: true);
+            if (combiSeleccionada.AgregarPasajero(pasajeroPrincipal))
             {
-                txtPasajero.Clear();
-                txtPasajero.Focus();
+                agregados++;
+            }
 
-                ActualizarListaCombis();
-                ActualizarListaPasajeros();
+            // Agrego los acompañantes (si los hay)
+            for (int i = 1; i < cantidadPasajeros; i++)
+            {
+                var acompanante = new Pasajero(
+                    nombre: nombre,  // Mismo nombre base
+                    tipo: tipo,      // Mismo tipo
+                    esReservaPrincipal: false,
+                    nombreReservante: nombre,
+                    numeroAcompanante: i
+                );
 
-                // Si es el primer pasajero, muestro mensaje especial
-                if (combiSeleccionada.FilaDeEspera.Count == 1)
+                if (combiSeleccionada.AgregarPasajero(acompanante))
                 {
-                    MessageBox.Show(
-                        $"PRIMER PASAJERO ANOTADO\n\n" +
-                        $"Timer iniciado: 20:00 minutos\n" +
-                        $"Combi: {combiSeleccionada.Nombre}\n" +
-                        $"Destino: {combiSeleccionada.Destino}\n" +
-                        $"Pasajero: {pasajero.Nombre} ({pasajero.ObtenerDescripcionTipo()})\n" +
-                        $"Tarifa: ${pasajero.Tarifa}",
-                        "Timer Iniciado",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    agregados++;
                 }
                 else
                 {
-                    MessageBox.Show(
-                        $"Pasajero agregado\n\n" +
-                        $"Nombre: {pasajero.Nombre}\n" +
-                        $"Tipo: {pasajero.ObtenerDescripcionTipo()}\n" +
-                        $"Tarifa: ${pasajero.Tarifa}\n\n" +
-                        $"Combi: {combiSeleccionada.Nombre}\n" +
-                        $"Pasajeros: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad}",
-                        "Pasajero Agregado",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    break; // Si no se pudo agregar, salgo del loop
                 }
+            }
+
+            // Limpio el formulario
+            txtPasajero.Clear();
+            numCantidadPasajeros.Value = 1;
+            txtPasajero.Focus();
+
+            // Actualizo las listas
+            ActualizarListaCombis();
+            ActualizarListaPasajeros();
+
+            // Muestro mensaje de confirmación
+            if (agregados == cantidadPasajeros)
+            {
+                decimal recaudacionTotal = agregados * pasajeroPrincipal.Tarifa;
+                
+                string mensaje;
+                if (cantidadPasajeros == 1)
+                {
+                    // Mensaje para un solo pasajero
+                    mensaje = $"Pasajero agregado\n\n" +
+                             $"Nombre: {pasajeroPrincipal.Nombre}\n" +
+                             $"Tipo: {pasajeroPrincipal.ObtenerDescripcionTipo()}\n" +
+                             $"Tarifa: ${pasajeroPrincipal.Tarifa}\n\n" +
+                             $"Combi: {combiSeleccionada.Nombre}\n" +
+                             $"Pasajeros en combi: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad}";
+                }
+                else
+                {
+                    // Mensaje para reserva grupal
+                    mensaje = $"RESERVA GRUPAL EXITOSA\n\n" +
+                             $"Reservante: {nombre}\n" +
+                             $"Tipo: {pasajeroPrincipal.ObtenerDescripcionTipo()}\n" +
+                             $"Cantidad total: {cantidadPasajeros} personas\n" +
+                             $"  - 1 pasajero principal: {nombre}\n" +
+                             $"  - {cantidadPasajeros - 1} acompañante(s): {nombre} #1, #2...\n\n" +
+                             $"Tarifa por persona: ${pasajeroPrincipal.Tarifa}\n" +
+                             $"Total a pagar: ${recaudacionTotal}\n\n" +
+                             $"Combi: {combiSeleccionada.Nombre}\n" +
+                             $"Pasajeros en combi: {combiSeleccionada.FilaDeEspera.Count}/{combiSeleccionada.Capacidad}";
+                }
+
+                // Si es el primer pasajero, agrego info del timer
+                if (esPrimerPasajero)
+                {
+                    mensaje = "PRIMER PASAJERO - TIMER INICIADO\n" +
+                             "Timer: 20:00 minutos\n\n" + mensaje;
+                }
+
+                MessageBox.Show(mensaje,
+                    cantidadPasajeros == 1 ? "Pasajero Agregado" : "Reserva Grupal",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show(
+                    $"Solo se pudieron agregar {agregados} de {cantidadPasajeros} pasajeros.\n" +
+                    $"La combi no tiene suficiente capacidad.",
+                    "Agregado parcial",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 

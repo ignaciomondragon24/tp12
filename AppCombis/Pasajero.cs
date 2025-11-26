@@ -15,6 +15,11 @@ namespace AppCombis
         public string Nombre { get; set; }
         public TipoPasajero Tipo { get; set; }
         public DateTime HoraAnotacion { get; set; }
+        
+        // Nuevo: Para reservas grupales
+        public bool EsReservaPrincipal { get; set; }  // Si es quien hizo la reserva
+        public string? NombreReservante { get; set; }  // Nombre de quien reservó (si es acompañante)
+        public int NumeroAcompanante { get; set; }     // Número de acompañante (0 si es principal)
 
         // Calcula cuánto paga según su tipo
         public decimal Tarifa
@@ -37,14 +42,19 @@ namespace AppCombis
             Nombre = string.Empty;
             Tipo = TipoPasajero.Normal;
             HoraAnotacion = DateTime.Now;
+            EsReservaPrincipal = true;
+            NumeroAcompanante = 0;
         }
 
         // Constructor con datos
-        public Pasajero(string nombre, TipoPasajero tipo)
+        public Pasajero(string nombre, TipoPasajero tipo, bool esReservaPrincipal = true, string? nombreReservante = null, int numeroAcompanante = 0)
         {
             Nombre = nombre;
             Tipo = tipo;
             HoraAnotacion = DateTime.Now;
+            EsReservaPrincipal = esReservaPrincipal;
+            NombreReservante = nombreReservante;
+            NumeroAcompanante = numeroAcompanante;
         }
 
         // Devuelve el símbolo del tipo de pasajero
@@ -74,14 +84,18 @@ namespace AppCombis
         // Convierte el pasajero a texto para mostrarlo en pantalla
         public override string ToString()
         {
-            return $"{ObtenerSimbolo()} {Nombre} ({ObtenerDescripcionTipo()}) - ${Tarifa}";
+            string nombreCompleto = EsReservaPrincipal || string.IsNullOrEmpty(NombreReservante)
+                ? Nombre
+                : $"{NombreReservante} #{NumeroAcompanante}";
+            
+            return $"{ObtenerSimbolo()} {nombreCompleto} ({ObtenerDescripcionTipo()}) - ${Tarifa}";
         }
 
         // Convierte el pasajero a formato CSV para guardarlo en archivo
-        // Formato: Nombre|Tipo|Fecha
+        // Formato: Nombre|Tipo|Fecha|EsReservaPrincipal|NombreReservante|NumeroAcompanante
         public string ToCsv()
         {
-            return $"{Nombre}|{(int)Tipo}|{HoraAnotacion:yyyy-MM-dd HH:mm:ss}";
+            return $"{Nombre}|{(int)Tipo}|{HoraAnotacion:yyyy-MM-dd HH:mm:ss}|{EsReservaPrincipal}|{NombreReservante ?? ""}|{NumeroAcompanante}";
         }
 
         // Crea un pasajero desde una línea CSV del archivo
@@ -93,12 +107,24 @@ namespace AppCombis
                 string[] partes = csv.Split('|');
                 if (partes.Length >= 3)
                 {
-                    return new Pasajero
+                    var pasajero = new Pasajero
                     {
                         Nombre = partes[0],
                         Tipo = (TipoPasajero)int.Parse(partes[1]),
                         HoraAnotacion = DateTime.Parse(partes[2])
                     };
+
+                    // Cargo los nuevos campos si existen
+                    if (partes.Length >= 4)
+                        pasajero.EsReservaPrincipal = bool.Parse(partes[3]);
+                    
+                    if (partes.Length >= 5 && !string.IsNullOrEmpty(partes[4]))
+                        pasajero.NombreReservante = partes[4];
+                    
+                    if (partes.Length >= 6)
+                        pasajero.NumeroAcompanante = int.Parse(partes[5]);
+
+                    return pasajero;
                 }
             }
             catch
