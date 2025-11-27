@@ -1,497 +1,103 @@
-# TRABAJO PRÁCTICO N°12 - INTEGRACIÓN #1
-## Sistema de Gestión de Combis - Terminal Obelisco
+# ?? Sistema de Gestión de Combis - Terminal Obelisco
+
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)
+![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=csharp)
+![Windows Forms](https://img.shields.io/badge/Windows%20Forms-blue)
+![License](https://img.shields.io/badge/License-Academic-green)
+
+> Sistema completo de gestión para servicios de combis con múltiples funcionalidades: gestión de pasajeros, temporizadores automáticos, estadísticas en tiempo real y reportes detallados.
+
+---
+
+## ?? INTEGRANTES DEL PROYECTO
+
+| Nombre Completo | Legajo | Email | Rol |
+|-----------------|--------|-------|-----|
+| **Ignacio Mondragón** | [Tu Legajo] | [tu-email@uai.edu.ar] | Desarrollador Full Stack |
+| **[Nombre Integrante 2]** | [Legajo 2] | [email2@uai.edu.ar] | Desarrollador / Diseñador |
+| **[Nombre Integrante 3]** | [Legajo 3] | [email3@uai.edu.ar] | Analista / Tester |
 
 **Asignatura:** Programación y Estructuras de Datos  
 **Carrera:** Ingeniería en Sistemas  
 **Universidad:** Universidad Abierta Interamericana (UAI)  
-**Año:** 2025  
-**Alumno:** [Nombre del Alumno]  
-**Legajo:** [Número de Legajo]
+**Año Académico:** 2025  
+**Trabajo Práctico:** N°12 - Integración #1  
 
 ---
 
-## ÍNDICE
+## ?? ÍNDICE
 
-1. [Introducción](#introducción)
-2. [Objetivos](#objetivos)
-3. [Marco Teórico](#marco-teórico)
-4. [Análisis del Problema](#análisis-del-problema)
-5. [Diseño de la Solución](#diseño-de-la-solución)
-6. [Implementación](#implementación)
-7. [Pruebas y Resultados](#pruebas-y-resultados)
-8. [Conclusiones](#conclusiones)
-9. [Bibliografía](#bibliografía)
-10. [Anexos](#anexos)
-
----
-
-## 1. INTRODUCCIÓN
-
-El presente trabajo práctico consiste en el desarrollo de un sistema de gestión para un servicio de combis que opera desde la Terminal Obelisco hacia distintos puntos de la Ciudad Autónoma de Buenos Aires. El sistema fue implementado utilizando el lenguaje de programación C# con el framework .NET 8.0 y Windows Forms para la interfaz gráfica de usuario.
-
-El desarrollo de este proyecto permitió aplicar los conceptos fundamentales de estructuras de datos vistas durante la cursada, específicamente las estructuras dinámicas como colas (Queue) y listas (List), así como también conceptos de programación orientada a objetos, manejo de eventos, persistencia de datos y diseño de interfaces de usuario.
+1. [Descripción del Proyecto](#-descripción-del-proyecto)
+2. [Características Principales](#-características-principales)
+3. [Tecnologías Utilizadas](#-tecnologías-utilizadas)
+4. [Arquitectura del Sistema](#-arquitectura-del-sistema)
+5. [Instalación y Configuración](#-instalación-y-configuración)
+6. [Manual de Usuario](#-manual-de-usuario)
+7. [Estructura del Proyecto](#-estructura-del-proyecto)
+8. [Estructuras de Datos](#-estructuras-de-datos)
+9. [Capturas de Pantalla](#-capturas-de-pantalla)
+10. [Documentación Adicional](#-documentación-adicional)
+11. [Autores y Agradecimientos](#-autores-y-agradecimientos)
 
 ---
 
-## 2. OBJETIVOS
+## ?? DESCRIPCIÓN DEL PROYECTO
 
-### Objetivo General
-Desarrollar una aplicación de escritorio que permita gestionar eficientemente el servicio de combis, facilitando el registro de pasajeros, control de capacidad, generación de estadísticas y reportes diarios.
+El **Sistema de Gestión de Combis - Terminal Obelisco** es una aplicación de escritorio desarrollada en C# con Windows Forms que permite gestionar eficientemente el servicio de transporte de combis desde la Terminal Obelisco hacia diversos puntos de la Ciudad Autónoma de Buenos Aires.
 
-### Objetivos Específicos
-- Implementar estructuras de datos dinámicas (Queue y List) para la gestión de pasajeros
-- Aplicar el principio FIFO (First-In, First-Out) en la fila de espera de pasajeros
-- Desarrollar una interfaz gráfica intuitiva y funcional con Windows Forms
-- Implementar validaciones robustas para garantizar la integridad de los datos
-- Generar estadísticas en tiempo real del servicio
-- Crear reportes descargables con información detallada de las operaciones diarias
-- Implementar persistencia de datos mediante archivos de texto
-- Aplicar buenas prácticas de programación y documentación de código
+### Problemática que Resuelve
 
----
+La aplicación digitaliza y automatiza el proceso manual de:
+- ? Anotación de pasajeros en filas de espera
+- ? Control de capacidad de vehículos (19 pasajeros)
+- ? Gestión de diferentes tarifas (Normal, Estudiante, Jubilado)
+- ? Temporizador automático de 20 minutos para salidas
+- ? Múltiples combis operando simultáneamente
+- ? Generación de estadísticas y reportes diarios
+- ? Persistencia de datos entre sesiones
 
-## 3. MARCO TEÓRICO
+### Objetivos Académicos
 
-### 3.1 Estructuras de Datos
-
-#### 3.1.1 Cola (Queue)
-Una cola es una estructura de datos lineal que sigue el principio FIFO (First-In, First-Out), donde el primer elemento en entrar es el primero en salir. Es análoga a una fila de personas esperando ser atendidas.
-
-**Operaciones principales:**
-- **Enqueue:** Agregar un elemento al final de la cola
-- **Dequeue:** Extraer el elemento del frente de la cola
-- **Count:** Obtener la cantidad de elementos
-- **Peek:** Ver el primer elemento sin extraerlo
-
-**Complejidad temporal:**
-- Enqueue: O(1)
-- Dequeue: O(1)
-- Acceso: O(n)
-
-#### 3.1.2 Lista (List)
-Una lista es una colección dinámica ordenada de elementos que permite agregar, eliminar y acceder a elementos por índice. En C#, la clase `List<T>` es genérica y proporciona un array dinámico que crece automáticamente.
-
-**Ventajas:**
-- Tamaño dinámico (crece automáticamente)
-- Acceso rápido por índice O(1)
-- Métodos integrados de LINQ
-- Type-safe (seguridad de tipos)
-
-### 3.2 Programación Orientada a Eventos
-Windows Forms utiliza un modelo de programación orientado a eventos, donde la aplicación responde a acciones del usuario (clicks, teclas, movimientos del mouse) mediante manejadores de eventos.
-
-### 3.3 Persistencia de Datos
-La persistencia permite que los datos sobrevivan al cierre de la aplicación. En este proyecto se utilizaron archivos de texto plano con formato CSV (Comma-Separated Values) para almacenar:
-- Fila de espera de pasajeros
-- Estadísticas diarias
-
-### 3.4 Principio FIFO vs LIFO
-
-| Característica | FIFO (Cola) | LIFO (Pila) |
-|----------------|-------------|-------------|
-| Principio | First-In, First-Out | Last-In, First-Out |
-| Analogía | Fila en supermercado | Pila de platos |
-| Operación insertar | Enqueue (atrás) | Push (arriba) |
-| Operación extraer | Dequeue (frente) | Pop (arriba) |
-| Uso en este proyecto | Fila de espera | No aplicable |
+Este proyecto integra conceptos fundamentales de:
+- **Estructuras de Datos**: Colas (Queue), Listas (List), Enumeraciones
+- **POO**: Clases, Encapsulamiento, Herencia, Polimorfismo
+- **Eventos**: Programación orientada a eventos con Windows Forms
+- **Persistencia**: Manejo de archivos CSV para almacenamiento de datos
+- **Algoritmos**: FIFO (First-In First-Out), búsqueda, ordenamiento
+- **Diseño de Software**: Separación de capas, patrones de diseño
 
 ---
 
-## 4. ANÁLISIS DEL PROBLEMA
+## ? CARACTERÍSTICAS PRINCIPALES
 
-### 4.1 Descripción del Problema
-Se requiere un sistema que gestione el servicio de combis desde la Terminal Obelisco. El sistema debe:
-- Permitir anotar pasajeros con diferentes tipos de tarifas
-- Controlar la capacidad máxima (19 pasajeros)
-- Gestionar el embarque siguiendo el orden de llegada (FIFO)
-- Manejar un temporizador de 20 minutos para la salida
-- Ofrecer 3 rutas diferentes
-- Generar estadísticas y reportes
-- Persistir datos entre sesiones
-
-### 4.2 Requerimientos Funcionales
-
-#### RF01: Gestión de Pasajeros
-- El sistema debe permitir registrar pasajeros con nombre y tipo
-- Tipos de pasajero: Normal ($500), Estudiante ($250), Jubilado ($0)
-- Validar que el nombre no esté vacío
-- Registrar hora de anotación
-
-#### RF02: Control de Capacidad
-- Validar que no se superen los 19 lugares disponibles
-- Mostrar mensaje al intentar exceder la capacidad
-- Mostrar contador de lugares ocupados/disponibles
-
-#### RF03: Temporizador Automático
-- Iniciar temporizador de 20 minutos al anotar el primer pasajero
-- Mostrar cuenta regresiva en formato MM:SS
-- Cambiar color según tiempo restante (azul > naranja > rojo)
-- Partir automáticamente al llegar a 00:00
-
-#### RF04: Gestión de Viajes
-- Permitir iniciar viaje manualmente
-- Solicitar confirmación antes de partir
-- Permitir seleccionar ruta de viaje
-- Mostrar detalles completos del viaje
-- Vaciar la fila de espera al partir
-
-#### RF05: Rutas Disponibles
-- Ruta 1: Obelisco ? Puerto Madero (20 min)
-- Ruta 2: Obelisco ? Recoleta (25 min)
-- Ruta 3: Obelisco ? Palermo (30 min)
-
-#### RF06: Estadísticas en Tiempo Real
-- Mostrar total de viajes realizados
-- Mostrar total de pasajeros transportados
-- Mostrar recaudación total del día
-- Actualizar automáticamente después de cada viaje
-
-#### RF07: Generación de Reportes
-- Generar reporte en archivo de texto (.txt)
-- Incluir resumen general
-- Incluir desglose por tipo de pasajero
-- Incluir recaudación por tipo
-- Incluir detalle de cada viaje
-- Incluir promedios y porcentajes
-- Abrir automáticamente en Notepad
-
-#### RF08: Persistencia de Datos
-- Guardar fila de espera al cerrar
-- Guardar estadísticas del día
-- Cargar datos automáticamente al iniciar
-- Restaurar temporizador con tiempo correcto
-
-### 4.3 Requerimientos No Funcionales
-
-#### RNF01: Usabilidad
-- Interfaz intuitiva y fácil de usar
-- Mensajes claros y descriptivos
-- Colores diferenciados para acciones
-- Retroalimentación inmediata de las acciones
-
-#### RNF02: Confiabilidad
-- Manejo robusto de errores
-- Validaciones en todas las entradas
-- Confirmación en acciones críticas
-
-#### RNF03: Rendimiento
-- Tiempo de respuesta < 1 segundo en operaciones
-- Actualización visual inmediata
-
-#### RNF04: Mantenibilidad
-- Código bien documentado con comentarios
-- Separación de responsabilidades en clases
-- Nomenclatura clara y consistente
-
----
-
-## 5. DISEÑO DE LA SOLUCIÓN
-
-### 5.1 Arquitectura del Sistema
-
-El sistema sigue una arquitectura en capas:
-
-```
-???????????????????????????????????????
-?     Capa de Presentación            ?
-?  (Windows Forms - Form1.cs)         ?
-???????????????????????????????????????
-?     Capa de Lógica de Negocio       ?
-?  - Gestión de pasajeros             ?
-?  - Control de temporizador          ?
-?  - Validaciones                     ?
-???????????????????????????????????????
-?     Capa de Datos                   ?
-?  - Pasajero.cs                      ?
-?  - EstadisticasDiarias.cs           ?
-???????????????????????????????????????
-?     Capa de Persistencia            ?
-?  - StreamWriter/StreamReader        ?
-?  - Archivos CSV                     ?
-???????????????????????????????????????
-```
-
-### 5.2 Diagrama de Clases
-
-```
-????????????????????????????
-?      Form1               ?
-????????????????????????????
-? - filaDeEspera: Queue    ?
-? - pasajerosEnCombi: List ?
-? - estadisticas: Estadis..?
-? - tiempoRestante: int    ?
-????????????????????????????
-? + btnAnotar_Click()      ?
-? + btnSubir_Click()       ?
-? + timerCombi_Tick()      ?
-? + ActualizarLista()      ?
-????????????????????????????
-            ?
-            ? usa
-            ?
-????????????????????????????
-?      Pasajero            ?
-????????????????????????????
-? + Nombre: string         ?
-? + Tipo: TipoPasajero     ?
-? + HoraAnotacion: DateTime?
-? + Tarifa: decimal        ?
-????????????????????????????
-? + ToString(): string     ?
-? + ToCsv(): string        ?
-? + FromCsv(): Pasajero    ?
-????????????????????????????
-            ?
-            ? usa
-            ?
-????????????????????????????
-?  EstadisticasDiarias     ?
-????????????????????????????
-? + TotalViajes: int       ?
-? + TotalPasajeros: int    ?
-? + RecaudacionTotal: dec  ?
-? + Viajes: List<Viaje>    ?
-????????????????????????????
-? + RegistrarViaje()       ?
-? + GenerarReporte()       ?
-? + GuardarReporte()       ?
-????????????????????????????
-```
-
-### 5.3 Flujo de Operación
-
-#### Flujo 1: Anotar Pasajero
-```
-[Inicio]
-   ?
-   ?
-[Usuario ingresa nombre]
-   ?
-   ?
-[Usuario selecciona tipo]
-   ?
-   ?
-[Click en "Anotar"]
-   ?
-   ?
-[Validar nombre no vacío] ???NO??> [Mostrar error]
-   ?                                      ?
-   SÍ                                     ?
-   ?                                      ?
-[Validar capacidad < 19] ???NO??> [Mostrar "Combi llena"]
-   ?                                      ?
-   SÍ                                     ?
-   ?                                      ?
-[Crear objeto Pasajero]                   ?
-   ?                                      ?
-   ?                                      ?
-[Enqueue a filaDeEspera]                  ?
-   ?                                      ?
-   ?                                      ?
-[¿Es el primero?] ???SÍ??> [Iniciar temporizador]
-   ?                                      ?
-   NO                                     ?
-   ?                                      ?
-[Actualizar ListBox]                      ?
-   ?                                      ?
-   ?                                      ?
-[Mostrar confirmación]                    ?
-   ?                                      ?
-   ?                                      ?
-[Fin] <????????????????????????????????????
-```
-
-#### Flujo 2: Iniciar Viaje
-```
-[Inicio]
-   ?
-   ?
-[Click en "Subir a la combi"]
-   ?
-   ?
-[¿Hay pasajeros?] ???NO??> [Mostrar "Puerto Madero vacía"]
-   ?                              ?
-   SÍ                             ?
-   ?                              ?
-[Solicitar confirmación]           ?
-   ?                              ?
-   ?                              ?
-[¿Confirma?] ???NO??> [Cancelar] ??
-   ?                    ?
-   SÍ                   ?
-   ?                    ?
-[Mostrar selector de ruta]         ?
-   ?                              ?
-   ?                              ?
-[Usuario selecciona ruta]          ?
-   ?                              ?
-   ?                              ?
-[Dequeue todos los pasajeros]      ?
-   ?                              ?
-   ?                              ?
-[Agregar a pasajerosEnCombi]       ?
-   ?                              ?
-   ?                              ?
-[Registrar en estadísticas]        ?
-   ?                              ?
-   ?                              ?
-[Calcular recaudación]             ?
-   ?                              ?
-   ?                              ?
-[Mostrar detalles del viaje]       ?
-   ?                              ?
-   ?                              ?
-[Limpiar combi]                    ?
-   ?                              ?
-   ?                              ?
-[Actualizar estadísticas UI]       ?
-   ?                              ?
-   ?                              ?
-[Reiniciar temporizador]           ?
-   ?                              ?
-   ?                              ?
-[Fin] <?????????????????????????????
-```
-
-### 5.4 Estructura de Archivos
-
-```
-AppCombis/
-?
-??? Form1.cs                    # Lógica principal del formulario
-??? Form1.Designer.cs           # Diseño visual (generado)
-??? Form1.resx                  # Recursos del formulario
-?
-??? Pasajero.cs                 # Clase modelo Pasajero
-??? EstadisticasDiarias.cs      # Clase para estadísticas
-?
-??? AppCombis.csproj            # Archivo de proyecto
-??? Program.cs                  # Punto de entrada
-?
-??? bin/Debug/net8.0-windows/   # Archivos compilados
-    ??? AppCombis.exe           # Ejecutable
-    ??? fila_espera.txt         # Persistencia de fila
-    ??? estadisticas.txt        # Persistencia de stats
-    ??? Reporte_*.txt           # Reportes generados
-```
-
----
-
-## 6. IMPLEMENTACIÓN
-
-### 6.1 Tecnologías Utilizadas
-
-| Tecnología | Versión | Propósito |
-|------------|---------|-----------|
-| C# | 12.0 | Lenguaje de programación |
-| .NET | 8.0 | Framework de desarrollo |
-| Windows Forms | .NET 8 | Interfaz gráfica de usuario |
-| Visual Studio | 2022 | Entorno de desarrollo integrado |
-
-### 6.2 Estructuras de Datos Implementadas
-
-#### Queue<Pasajero>
-Se utilizó la clase genérica `Queue<T>` de .NET para implementar la fila de espera de pasajeros. Esta estructura garantiza el principio FIFO necesario para el correcto funcionamiento del sistema.
+### ?? Gestión de Pasajeros
 
 ```csharp
-// Declaración
-private Queue<Pasajero> filaDeEspera = new Queue<Pasajero>();
-
-// Agregar pasajero (al final)
-filaDeEspera.Enqueue(nuevoPasajero);
-
-// Quitar pasajero (del frente)
-Pasajero primero = filaDeEspera.Dequeue();
-
-// Consultar cantidad
-int cantidad = filaDeEspera.Count;
-```
-
-**Justificación:** Una cola es la estructura natural para representar una fila de espera en el mundo real. El primer pasajero en llegar debe ser el primero en subir, lo cual es exactamente el comportamiento FIFO que proporciona Queue.
-
-#### List<Pasajero>
-Se utilizó `List<T>` para almacenar temporalmente los pasajeros que suben a la combi durante un viaje, así como para mantener el historial de viajes en las estadísticas.
-
-```csharp
-// Declaración
-private List<Pasajero> pasajerosEnCombi = new List<Pasajero>();
-
-// Agregar pasajero
-pasajerosEnCombi.Add(pasajero);
-
-// Operaciones LINQ
-int cantidad = pasajerosEnCombi.Count;
-decimal total = pasajerosEnCombi.Sum(p => p.Tarifa);
-```
-
-**Justificación:** List proporciona flexibilidad para acceder a elementos por índice y realizar operaciones de consulta con LINQ, lo cual es útil para generar estadísticas y reportes.
-
-### 6.3 Clases Principales
-
-#### Clase Pasajero
-Esta clase encapsula toda la información relevante de un pasajero.
-
-```csharp
-public class Pasajero
+// Tipos de pasajero con tarifas diferenciadas
+public enum TipoPasajero
 {
-    public string Nombre { get; set; }
-    public TipoPasajero Tipo { get; set; }
-    public DateTime HoraAnotacion { get; set; }
-    
-    public decimal Tarifa
-    {
-        get
-        {
-            return Tipo switch
-            {
-                TipoPasajero.Normal => 500m,
-                TipoPasajero.Estudiante => 250m,
-                TipoPasajero.Jubilado => 0m,
-                _ => 500m
-            };
-        }
-    }
+    Normal,      // $500
+    Estudiante,  // $250 (50% descuento)
+    Jubilado     // $0 (viaje gratuito)
 }
 ```
 
-**Características:**
-- Propiedad calculada `Tarifa` (no se almacena, se calcula según el tipo)
-- Método `ToCsv()` para serialización
-- Método estático `FromCsv()` para deserialización
-- Enumeración interna `TipoPasajero` para type-safety
+- ? **Registro de pasajeros** con nombre, tipo y hora de anotación
+- ? **Validación de capacidad** (máximo 19 pasajeros por combi)
+- ? **Cálculo automático de tarifas** según tipo de pasajero
+- ? **Cola FIFO** para orden de embarque justo
+- ? **Reservas grupales** con acompañantes
 
-#### Clase EstadisticasDiarias
-Gestiona las estadísticas y genera reportes.
+### ?? Gestión de Múltiples Combis
 
-```csharp
-public class EstadisticasDiarias
-{
-    public int TotalViajes { get; set; }
-    public int TotalPasajeros { get; set; }
-    public decimal RecaudacionTotal { get; set; }
-    public List<Viaje> Viajes { get; set; }
-    
-    public void RegistrarViaje(List<Pasajero> pasajeros)
-    {
-        // Crear viaje
-        // Calcular recaudación
-        // Actualizar contadores
-        // Agregar a historial
-    }
-    
-    public string GenerarReporte()
-    {
-        // Construir reporte con StringBuilder
-        // Incluir resumen, desglose y detalles
-        // Retornar string formateado
-    }
-}
-```
+- ? **Crear combis personalizadas** con nombre y capacidad configurables
+- ? **Gestión simultánea** de múltiples vehículos
+- ? **Estados de combi**: Disponible, En Espera, En Viaje, Mantenimiento
+- ? **Temporizadores independientes** por cada combi
+- ? **Selección de rutas/destinos**: Puerto Madero, Recoleta, Palermo, Retiro, etc.
 
-### 6.4 Características Avanzadas
+### ?? Temporizador Automático
 
-#### Temporizador con Cuenta Regresiva
 ```csharp
 private void timerCombi_Tick(object sender, EventArgs e)
 {
@@ -500,273 +106,38 @@ private void timerCombi_Tick(object sender, EventArgs e)
     
     if (tiempoRestanteSegundos <= 0)
     {
-        timerCombi.Stop();
-        // Iniciar viaje automáticamente
-        btnSubir_Click(sender, e);
+        // Salida automática al llegar a 00:00
+        IniciarViaje();
     }
 }
 ```
 
-El temporizador:
-- Se actualiza cada segundo (Interval = 1000ms)
-- Cambia de color según el tiempo restante
-- Inicia automáticamente un viaje al llegar a 0
-- Se persiste al cerrar la aplicación
+- ? **Inicio automático** al anotar el primer pasajero
+- ? **Cuenta regresiva** de 20 minutos (formato MM:SS)
+- ? **Cambio de color** según urgencia (azul ? naranja ? rojo)
+- ? **Salida automática** al alcanzar 00:00
+- ? **Persistencia inteligente** del tiempo transcurrido
 
-#### Persistencia Inteligente
+### ?? Estadísticas en Tiempo Real
+
 ```csharp
-private void GuardarFilaDeEsperaEnArchivo()
+public class EstadisticasDiarias
 {
-    using (StreamWriter escritor = new StreamWriter(ARCHIVO_FILA))
-    {
-        foreach (Pasajero pasajero in filaDeEspera)
-        {
-            escritor.WriteLine(pasajero.ToCsv());
-        }
-    }
+    public int TotalViajes { get; set; }
+    public int TotalPasajeros { get; set; }
+    public decimal RecaudacionTotal { get; set; }
+    public List<Viaje> Viajes { get; set; }
 }
 ```
 
-La persistencia:
-- Usa formato CSV para fácil lectura
-- Guarda automáticamente al cerrar
-- Carga automáticamente al iniciar
-- Restaura el temporizador considerando el tiempo transcurrido
-
-### 6.5 Validaciones Implementadas
-
-| Validación | Ubicación | Mensaje |
-|------------|-----------|---------|
-| Nombre vacío | btnAnotar_Click | "Por favor, ingrese el nombre del pasajero." |
-| Capacidad excedida | btnAnotar_Click | "Combi llena. No se pueden anotar más pasajeros." |
-| Fila vacía | btnSubir_Click | "No hay pasajeros en espera..." |
-| Confirmación cierre | Form1_FormClosing | "Hay pasajeros en espera. ¿Cerrar igualmente?" |
-
----
-
-## 7. PRUEBAS Y RESULTADOS
-
-### 7.1 Casos de Prueba Ejecutados
-
-#### CP01: Anotar Pasajero Normal
-**Entrada:**
-- Nombre: "Juan Pérez"
-- Tipo: Normal
-
-**Resultado Esperado:**
-- Pasajero aparece en lista
-- Tarifa: $500
-- Temporizador inicia (si es el primero)
-
-**Resultado Obtenido:** ? Correcto
-
-#### CP02: Anotar con Combi Llena
-**Entrada:**
-- 19 pasajeros ya anotados
-- Intento de anotar pasajero #20
-
-**Resultado Esperado:**
-- Mensaje "Combi llena"
-- No se agrega el pasajero
-
-**Resultado Obtenido:** ? Correcto
-
-#### CP03: Viaje con Diferentes Tipos
-**Entrada:**
-- 5 Normales, 3 Estudiantes, 2 Jubilados
-
-**Resultado Esperado:**
-- Recaudación: (5×$500) + (3×$250) + (2×$0) = $3,250
-
-**Resultado Obtenido:** ? Correcto
-
-#### CP04: Temporizador Automático
-**Entrada:**
-- Anotar 1 pasajero
-- Esperar 20 minutos (o ajustar constante para prueba)
-
-**Resultado Esperado:**
-- Viaje inicia automáticamente
-- Se solicita ruta
-
-**Resultado Obtenido:** ? Correcto
-
-#### CP05: Persistencia
-**Entrada:**
-- Anotar 3 pasajeros
-- Cerrar aplicación
-- Reabrir
-
-**Resultado Esperado:**
-- Se cargan los 3 pasajeros
-- Temporizador continúa desde donde quedó
-
-**Resultado Obtenido:** ? Correcto
-
-### 7.2 Pruebas de Integración
-
-| Módulo | Componente | Estado |
-|--------|------------|--------|
-| Gestión de Pasajeros | Queue<Pasajero> | ? |
-| Temporizador | Timer | ? |
-| Estadísticas | EstadisticasDiarias | ? |
-| Reportes | StringBuilder | ? |
-| Persistencia | StreamWriter/Reader | ? |
-| Interfaz | Windows Forms | ? |
-
-### 7.3 Métricas del Proyecto
-
-| Métrica | Valor |
-|---------|-------|
-| Líneas de código (total) | ~800 |
-| Clases implementadas | 3 |
-| Métodos públicos | 15 |
-| Métodos privados | 12 |
-| Eventos manejados | 6 |
-| Controles UI | 15 |
-| Archivos de documentación | 7 |
-
-### 7.4 Capturas de Pantalla
-
-*[En un trabajo real, aquí incluirías capturas de pantalla de:]*
-- Pantalla principal con pasajeros en espera
-- Selector de rutas
-- Detalles de viaje
-- Panel de estadísticas
-- Reporte generado
-- Confirmación de cierre
-
----
-
-## 8. CONCLUSIONES
-
-### 8.1 Logros Alcanzados
-
-1. **Aplicación exitosa de estructuras de datos:** Se implementó correctamente el uso de Queue para la fila de espera y List para el almacenamiento temporal, demostrando comprensión de cuándo usar cada estructura según las necesidades del problema.
-
-2. **Interfaz intuitiva y funcional:** La aplicación cuenta con una interfaz clara que facilita su uso, con retroalimentación visual inmediata y mensajes descriptivos.
-
-3. **Validaciones robustas:** Se implementaron validaciones en todos los puntos críticos, garantizando la integridad de los datos y evitando errores en tiempo de ejecución.
-
-4. **Persistencia confiable:** El sistema de archivos implementado permite mantener el estado entre sesiones, incluyendo la restauración inteligente del temporizador.
-
-5. **Estadísticas completas:** El módulo de estadísticas proporciona información valiosa sobre el servicio, con cálculos automáticos de promedios y porcentajes.
-
-### 8.2 Dificultades Encontradas y Soluciones
-
-#### Dificultad 1: Persistencia del Temporizador
-**Problema:** Al cerrar y reabrir la aplicación, el temporizador no consideraba el tiempo transcurrido mientras la aplicación estaba cerrada.
-
-**Solución:** Se implementó un cálculo que resta el tiempo transcurrido (diferencia entre DateTime.Now y HoraAnotacion del primer pasajero) del tiempo total de espera.
-
-#### Dificultad 2: Recorrer Queue sin Modificarla
-**Problema:** No se puede usar foreach directamente en Queue sin extraer elementos.
-
-**Solución:** Se utilizó el método `ToArray()` para crear una copia temporal que permite iterar sin modificar la cola original.
-
-#### Dificultad 3: Sincronización de Estadísticas
-**Problema:** Asegurar que las estadísticas se actualicen correctamente después de cada viaje.
-
-**Solución:** Se creó un método `ActualizarEstadisticas()` que se llama explícitamente después de registrar cada viaje, garantizando la consistencia.
-
-### 8.3 Posibles Mejoras Futuras
-
-1. **Base de datos:** Migrar de archivos de texto a una base de datos (SQL Server o SQLite) para mejor rendimiento y capacidades de consulta.
-
-2. **Múltiples terminales:** Extender el sistema para soportar varias terminales simultáneamente.
-
-3. **Reservas anticipadas:** Permitir que los pasajeros reserven con anticipación.
-
-4. **Notificaciones:** Implementar notificaciones cuando quedan pocos minutos para la salida.
-
-5. **Gráficos estadísticos:** Agregar visualización gráfica de las estadísticas (chart controls).
-
-6. **Historial histórico:** Mantener estadísticas de múltiples días y permitir consultas históricas.
-
-7. **Exportación de reportes:** Permitir exportar reportes en formatos adicionales (PDF, Excel).
-
-8. **Autenticación:** Implementar un sistema de login para control de acceso.
-
-### 8.4 Aprendizajes
-
-Este trabajo práctico permitió consolidar conocimientos sobre:
-- Selección y uso apropiado de estructuras de datos
-- Diseño de interfaces de usuario con Windows Forms
-- Programación orientada a eventos
-- Manejo de archivos para persistencia
-- Validación de datos de entrada
-- Separación de responsabilidades en clases
-- Documentación de código
-- Testing y depuración
-
-Además, se adquirió experiencia práctica en el desarrollo de aplicaciones completas, desde el análisis del problema hasta la implementación y pruebas finales.
-
----
-
-## 9. BIBLIOGRAFÍA
-
-1. **Microsoft Learn - C# Documentation**  
-   URL: https://learn.microsoft.com/es-es/dotnet/csharp/  
-   Consultado: Enero 2025
-
-2. **Microsoft Learn - Queue<T> Class**  
-   URL: https://learn.microsoft.com/es-es/dotnet/api/system.collections.generic.queue-1  
-   Consultado: Enero 2025
-
-3. **Microsoft Learn - List<T> Class**  
-   URL: https://learn.microsoft.com/es-es/dotnet/api/system.collections.generic.list-1  
-   Consultado: Enero 2025
-
-4. **Microsoft Learn - Windows Forms**  
-   URL: https://learn.microsoft.com/es-es/dotnet/desktop/winforms/  
-   Consultado: Enero 2025
-
-5. **Joyanes Aguilar, Luis. "Fundamentos de Programación - Algoritmos, Estructuras de Datos y Objetos"**  
-   4ta Edición, McGraw-Hill, 2008
-
-6. **Deitel, Paul J. "C# How to Program"**  
-   6th Edition, Pearson, 2017
-
-7. **Apuntes de la Cátedra - Programación y Estructuras de Datos**  
-   Universidad Abierta Interamericana, 2025
-
----
-
-## 10. ANEXOS
-
-### Anexo A: Código Fuente Completo
-
-*[Los archivos de código fuente se encuentran en el proyecto]*
-
-**Archivos principales:**
-- `Form1.cs`: Lógica del formulario (350 líneas)
-- `Form1.Designer.cs`: Diseño de la UI (200 líneas)
-- `Pasajero.cs`: Clase modelo (120 líneas)
-- `EstadisticasDiarias.cs`: Estadísticas y reportes (180 líneas)
-
-### Anexo B: Formato de Archivos de Persistencia
-
-#### fila_espera.txt
-```
-Juan Perez|0|2025-01-13 08:15:30
-Ana Garcia|1|2025-01-13 08:17:45
-Luis Lopez|2|2025-01-13 08:20:12
-```
-
-Formato: `Nombre|TipoNumerico|FechaHora`
-
-#### estadisticas.txt
-```
-Fecha|2025-01-13
-TotalViajes|5
-TotalPasajeros|73
-PasajerosNormales|40
-PasajerosEstudiantes|20
-PasajerosJubilados|13
-RecaudacionTotal|28250.00
-```
-
-### Anexo C: Ejemplo de Reporte Generado
+- ? **Contador de viajes** realizados en el día
+- ? **Total de pasajeros** transportados
+- ? **Recaudación total** del día
+- ? **Desglose por tipo** de pasajero (Normal, Estudiante, Jubilado)
+- ? **Promedios automáticos** (pasajeros/viaje, recaudación/viaje)
+- ? **Horarios**: Primer y último viaje del día
+
+### ?? Generación de Reportes
 
 ```
 =======================================================
@@ -778,91 +149,736 @@ Fecha: lunes, 13 de enero de 2025
 -------------------------------------------------------
   RESUMEN GENERAL
 -------------------------------------------------------
-  Total de viajes:        5
-  Total de pasajeros:     73
-  Recaudacion total:      $28,250.00
-
-  Primer viaje:           08:15:30
-  Ultimo viaje:           17:45:22
-  Promedio pasajeros/viaje: 14.60
-  Promedio recaudacion/viaje: $5,650.00
-
--------------------------------------------------------
-  DESGLOSE POR TIPO DE PASAJERO
--------------------------------------------------------
-  [N] Pasajeros Normales:   40 (54.8%)
-  [E] Estudiantes:          20 (27.4%)
-  [J] Jubilados:            13 (17.8%)
-
--------------------------------------------------------
-  RECAUDACION POR TIPO
--------------------------------------------------------
-  [N] Normales:    $20,000.00
-  [E] Estudiantes: $5,000.00
-  [J] Jubilados:   $0.00
-
--------------------------------------------------------
-  DETALLE DE VIAJES
--------------------------------------------------------
-  Viaje #1 - 08:15:30
-    Pasajeros: 15 | Recaudacion: $6,250.00
-  Viaje #2 - 10:30:45
-    Pasajeros: 12 | Recaudacion: $4,500.00
-  ...
-
-=======================================================
-  Reporte generado: 13/01/2025 17:45:30
-=======================================================
+  Total de viajes:        12
+  Total de pasajeros:     187
+  Recaudacion total:      $73,250.00
+  
+  Promedio pasajeros/viaje: 15.58
+  Promedio recaudacion/viaje: $6,104.17
 ```
 
-### Anexo D: Diagrama de Flujo Completo
+- ? **Reportes completos** con resumen, desglose y detalles
+- ? **Exportación a TXT** con formato profesional
+- ? **Apertura automática** en Notepad
+- ? **Información detallada** por cada viaje
+- ? **Estadísticas calculadas** (porcentajes, promedios)
 
-*[En un trabajo académico completo, aquí incluirías diagramas de flujo detallados]*
+### ?? Persistencia de Datos
 
-### Anexo E: Manual de Usuario
+- ? **Guardado automático** al cerrar la aplicación
+- ? **Carga automática** al iniciar
+- ? **Formato CSV** para fácil lectura y edición
+- ? **Archivos generados**:
+  - `fila_espera.txt` - Cola de pasajeros
+  - `estadisticas.txt` - Datos del día
+  - `combis.txt` - Configuración de combis
+  - `pasajeros_combis.txt` - Asignación de pasajeros
+  - `Reporte_YYYYMMDD_HHmmss.txt` - Reportes generados
 
-#### Inicio de la Aplicación
-1. Ejecutar `AppCombis.exe`
-2. La aplicación carga automáticamente datos guardados (si existen)
-3. La interfaz principal muestra la Terminal Obelisco
+### ?? Interfaz Moderna (Soft UI / Neumorphism)
 
-#### Anotar un Pasajero
-1. Ingresar nombre en el campo "Pasajero"
-2. Seleccionar tipo en el desplegable
-3. Presionar botón "Anotar"
+- ? **Diseño minimalista** sin bordes duros
+- ? **Efectos de elevación** con sombras suaves
+- ? **Cards personalizados** para visualización de datos
+- ? **Sidebar de navegación** con iconos
+- ? **Colores armoniosos** y profesionales
+- ? **Animaciones fluidas** en interacciones
+
+---
+
+## ??? TECNOLOGÍAS UTILIZADAS
+
+| Tecnología | Versión | Descripción |
+|------------|---------|-------------|
+| **C#** | 12.0 | Lenguaje de programación principal |
+| **.NET** | 8.0 | Framework de desarrollo |
+| **Windows Forms** | .NET 8 | Framework para interfaz gráfica |
+| **Visual Studio** | 2022 | IDE de desarrollo |
+| **Git** | 2.x | Control de versiones |
+| **GitHub** | - | Repositorio remoto |
+
+### Librerías y Componentes Utilizados
+
+```csharp
+using System.Collections.Generic;  // Queue<T>, List<T>
+using System.Linq;                 // LINQ queries
+using System.IO;                   // StreamWriter, StreamReader
+using System.Text;                 // StringBuilder
+using System.Drawing;              // Graphics, Color, Font
+using System.Windows.Forms;        // Form, Controls
+```
+
+---
+
+## ??? ARQUITECTURA DEL SISTEMA
+
+### Diagrama de Arquitectura en Capas
+
+```
+???????????????????????????????????????????
+?    CAPA DE PRESENTACIÓN                 ?
+?  ????????????????  ??????????????????? ?
+?  ?   Form1.cs   ?  ? FormGestion     ? ?
+?  ?  (Principal) ?  ?   Combis.cs     ? ?
+?  ????????????????  ??????????????????? ?
+?        ?                    ?           ?
+?        ??????????????????????           ?
+???????????????????????????????????????????
+?    CAPA DE LÓGICA DE NEGOCIO            ?
+?        ???????????????????              ?
+?        ?  Validaciones   ?              ?
+?        ?  Cálculos       ?              ?
+?        ?  Temporizadores ?              ?
+?        ???????????????????              ?
+???????????????????????????????????????????
+?    CAPA DE MODELOS/DATOS                ?
+?  ????????????  ??????????????????????  ?
+?  ? Combi.cs ?  ?   Pasajero.cs      ?  ?
+?  ????????????  ??????????????????????  ?
+?  ???????????????????????????????????   ?
+?  ? EstadisticasDiarias.cs          ?   ?
+?  ???????????????????????????????????   ?
+?                 ?                       ?
+???????????????????????????????????????????
+?    CAPA DE PERSISTENCIA                 ?
+?  ??????????????????????????????????    ?
+?  ?  StreamWriter / StreamReader   ?    ?
+?  ?  Archivos CSV (.txt)           ?    ?
+?  ??????????????????????????????????    ?
+???????????????????????????????????????????
+```
+
+### Diagrama de Clases UML
+
+```
+???????????????????????
+?      Form1          ?
+???????????????????????
+? - filaDeEspera      ???????
+? - estadisticas      ?     ?
+? - timerCombi        ?     ?
+???????????????????????     ?
+? + btnAnotar_Click() ?     ?
+? + btnSubir_Click()  ?     ?
+? + timerTick()       ?     ?
+???????????????????????     ?
+           ?                ?
+           ? usa            ?
+           ?                ?
+???????????????????????     ?
+?   Pasajero          ???????
+???????????????????????
+? + Nombre: string    ?
+? + Tipo: enum        ?
+? + HoraAnotacion     ?
+? + Tarifa: decimal   ?
+???????????????????????
+? + ToCsv()           ?
+? + FromCsv()         ?
+???????????????????????
+           ?
+           ? usa
+           ?
+???????????????????????
+?   Combi             ?
+???????????????????????
+? + NumeroCombi: int  ?
+? + Nombre: string    ?
+? + FilaDeEspera      ?
+? + Capacidad: int    ?
+? + Estado: enum      ?
+???????????????????????
+? + AgregarPasajero() ?
+? + QuitarPasajero()  ?
+? + IniciarViaje()    ?
+???????????????????????
+```
+
+---
+
+## ?? INSTALACIÓN Y CONFIGURACIÓN
+
+### Requisitos Previos
+
+- **Sistema Operativo**: Windows 10/11
+- **.NET Runtime**: 8.0 o superior
+- **RAM**: Mínimo 2GB
+- **Espacio en Disco**: 50MB
+
+### Opción 1: Ejecutar desde Código Fuente
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/ignaciomondragon24/tp12.git
+
+# 2. Navegar a la carpeta del proyecto
+cd tp12/AppCombis
+
+# 3. Restaurar dependencias
+dotnet restore
+
+# 4. Compilar el proyecto
+dotnet build
+
+# 5. Ejecutar la aplicación
+dotnet run
+```
+
+### Opción 2: Visual Studio 2022
+
+1. Abrir `AppCombis.sln` en Visual Studio 2022
+2. Presionar **F5** o click en "? Iniciar"
+3. La aplicación se compilará y ejecutará automáticamente
+
+### Opción 3: Ejecutable Precompilado
+
+1. Navegar a `AppCombis/bin/Release/net8.0-windows/`
+2. Ejecutar `AppCombis.exe`
+
+---
+
+## ?? MANUAL DE USUARIO
+
+### Pantalla Principal
+
+#### 1?? Anotar un Pasajero
+
+```
+???????????????????????????????
+? Nombre: [Juan Perez      ] ?
+? Tipo:   [? Normal         ] ?
+? [      Anotar Pasajero    ] ?
+???????????????????????????????
+```
+
+1. Ingresar el **nombre** del pasajero
+2. Seleccionar el **tipo** (Normal $500, Estudiante $250, Jubilado $0)
+3. Click en **"Anotar Pasajero"**
 4. El pasajero aparece en la lista "En Espera"
-5. Si es el primero, el temporizador inicia en 20:00
+5. Si es el primero, el temporizador inicia en **20:00**
 
-#### Iniciar un Viaje
-1. Presionar ">> Subir a la combi (Iniciar Viaje)"
-2. Confirmar con "Yes"
-3. Seleccionar ruta deseada
-4. Presionar "Confirmar"
-5. Ver detalles del viaje (pasajeros, recaudación, etc.)
+#### 2?? Iniciar un Viaje
 
-#### Generar Reporte
-1. Presionar "Generar Reporte Del Dia"
-2. El archivo se crea con fecha/hora actual
-3. Se abre automáticamente en Notepad
-4. Guardar donde se desee
+1. Click en **">> Subir a la combi (Iniciar Viaje)"**
+2. Confirmar con **"Sí"** en el diálogo
+3. Seleccionar el **destino/ruta** deseada
+4. Click en **"Confirmar"**
+5. Se muestra un resumen del viaje con:
+   - Cantidad de pasajeros
+   - Recaudación total
+   - Desglose por tipo
+   - Hora de salida
 
-#### Cerrar la Aplicación
-1. Presionar "Cerrar Aplicacion"
-2. Si hay pasajeros en espera, confirmar el cierre
-3. Los datos se guardan automáticamente
+#### 3?? Gestión de Múltiples Combis
+
+1. Click en **"Gestión de Múltiples Combis"** (botón verde)
+2. Se abre ventana con 3 paneles:
+   - **Izquierda**: Lista de combis disponibles
+   - **Centro**: Pasajeros de la combi seleccionada
+   - **Derecha**: Acciones (agregar/quitar, iniciar viaje)
+
+**Crear Nueva Combi:**
+- Click en **"+ Nueva Combi"**
+- Ingresar nombre y capacidad
+- La combi aparece en la lista
+
+**Agregar Pasajero a Combi:**
+- Seleccionar combi en panel izquierdo
+- Ingresar nombre y tipo en panel derecho
+- Click en **"+ Agregar Pasajero"**
+
+**Quitar Pasajero:**
+- Seleccionar combi
+- Seleccionar pasajero en panel central
+- Click en **"- Quitar Pasajero Seleccionado"**
+
+#### 4?? Generar Reporte
+
+1. Click en **"Generar Reporte Del Día"**
+2. El archivo se crea automáticamente: `Reporte_YYYYMMDD_HHmmss.txt`
+3. Se abre en **Notepad** para visualización
+4. Guardar en la ubicación deseada
+
+#### 5?? Ver Estadísticas
+
+Las estadísticas se muestran en tiempo real en la interfaz:
+- **Total de viajes** del día
+- **Total de pasajeros** transportados
+- **Recaudación acumulada**
+- **Desglose por tipo** de pasajero
 
 ---
 
-## DECLARACIÓN DE AUTORÍA
+## ?? ESTRUCTURA DEL PROYECTO
 
-Declaro que este trabajo práctico fue realizado íntegramente por mi persona, aplicando los conocimientos adquiridos durante la cursada de Programación y Estructuras de Datos en la Universidad Abierta Interamericana.
+```
+AppCombis/
+?
+??? AppCombis/                      # Proyecto principal
+?   ??? Form1.cs                    # Formulario principal (lógica)
+?   ??? Form1.Designer.cs           # Diseño visual del Form1
+?   ??? Form1.resx                  # Recursos del Form1
+?   ?
+?   ??? FormGestionCombis.cs        # Gestión de múltiples combis
+?   ??? FormGestionCombis.Designer.cs
+?   ??? FormGestionCombis.resx
+?   ?
+?   ??? Combi.cs                    # Clase modelo: Combi
+?   ??? Pasajero.cs                 # Clase modelo: Pasajero
+?   ??? EstadisticasDiarias.cs      # Clase modelo: Estadísticas
+?   ?
+?   ??? SoftUIPanel.cs              # Componente UI personalizado
+?   ??? SoftUIButton.cs             # Componente UI personalizado
+?   ??? SoftUISidebar.cs            # Componente UI personalizado
+?   ??? CombiCardItem.cs            # Card personalizado para combis
+?   ??? CombiListContainer.cs       # Contenedor personalizado
+?   ?
+?   ??? Program.cs                  # Punto de entrada de la app
+?   ??? AppCombis.csproj            # Archivo de proyecto
+?   ?
+?   ??? bin/Debug/net8.0-windows/   # Archivos compilados
+?       ??? AppCombis.exe           # Ejecutable
+?       ??? fila_espera.txt         # Persistencia: fila de espera
+?       ??? estadisticas.txt        # Persistencia: estadísticas
+?       ??? combis.txt              # Persistencia: combis
+?       ??? Reporte_*.txt           # Reportes generados
+?
+??? README.md                        # Este archivo
+??? SOFT_UI_GUIDE.md                # Guía de diseño Soft UI
+??? MATERIAL_DESIGN_GUIDE.md        # Guía de Material Design
+??? NUEVAS_FUNCIONALIDADES.md       # Documentación de funciones
+??? GUIA_SISTEMA_INTEGRADO.md       # Guía del sistema integrado
+??? PROMPT_DIAPOSITIVAS.md          # Prompt para generar presentación
+?
+??? .gitignore                      # Archivos ignorados por Git
+??? AppCombis.sln                   # Solución de Visual Studio
+```
 
-El código fue escrito desde cero, consultando únicamente la documentación oficial de Microsoft y los apuntes de la cátedra.
+### Descripción de Archivos Clave
 
-**Firma:** _____________________
-
-**Fecha:** _____________________
+| Archivo | Líneas | Descripción |
+|---------|--------|-------------|
+| **Form1.cs** | ~800 | Lógica principal del formulario (eventos, validaciones) |
+| **Combi.cs** | ~350 | Modelo de combi con métodos de gestión |
+| **Pasajero.cs** | ~180 | Modelo de pasajero con tarifas y serialización |
+| **EstadisticasDiarias.cs** | ~220 | Gestión de estadísticas y generación de reportes |
+| **FormGestionCombis.cs** | ~500 | Gestión de múltiples combis simultáneas |
 
 ---
 
-**FIN DEL INFORME**
+## ??? ESTRUCTURAS DE DATOS
+
+### Queue<Pasajero> - Cola FIFO
+
+```csharp
+private Queue<Pasajero> filaDeEspera = new Queue<Pasajero>();
+
+// Agregar al final de la fila
+filaDeEspera.Enqueue(nuevoPasajero);
+
+// Quitar del frente (primero en entrar, primero en salir)
+Pasajero primero = filaDeEspera.Dequeue();
+
+// Ver el primero sin quitarlo
+Pasajero proximo = filaDeEspera.Peek();
+
+// Cantidad de elementos
+int cantidad = filaDeEspera.Count;
+```
+
+**¿Por qué Queue?**
+- ? Implementa perfectamente el principio FIFO requerido
+- ? Operaciones Enqueue y Dequeue en O(1)
+- ? Representa naturalmente una "fila de espera"
+
+### List<Pasajero> - Lista Dinámica
+
+```csharp
+private List<Pasajero> pasajerosEnCombi = new List<Pasajero>();
+
+// Agregar elemento
+pasajerosEnCombi.Add(pasajero);
+
+// Acceso por índice O(1)
+Pasajero p = pasajerosEnCombi[0];
+
+// Operaciones LINQ
+int normales = pasajerosEnCombi.Count(p => p.Tipo == TipoPasajero.Normal);
+decimal total = pasajerosEnCombi.Sum(p => p.Tarifa);
+var ordenados = pasajerosEnCombi.OrderBy(p => p.Nombre);
+```
+
+**¿Por qué List?**
+- ? Acceso rápido por índice
+- ? Compatible con LINQ para consultas
+- ? Tamaño dinámico
+- ? Ideal para almacenar historial de viajes
+
+### Comparación de Complejidades
+
+| Operación | Queue<T> | List<T> |
+|-----------|----------|---------|
+| **Agregar al final** | O(1) | O(1) amortizado |
+| **Quitar del inicio** | O(1) | O(n) |
+| **Acceso por índice** | O(n) | O(1) |
+| **Búsqueda** | O(n) | O(n) |
+| **Ordenamiento** | N/A | O(n log n) |
+
+---
+
+## ?? CAPTURAS DE Pantalla
+
+### Pantalla Principal
+```
+??????????????????????????????????????????????????????
+?  ?? Sistema de Gestión de Combis - Terminal Obelisco?
+?                                                     ?
+?  ???????????????????  ?????????????????????????????
+?  ? PASAJEROS       ?  ? INFORMACIÓN DEL VIAJE    ??
+?  ? EN ESPERA       ?  ?                          ??
+?  ?                 ?  ? Tiempo restante: 18:45   ??
+?  ? [N] Juan Perez  ?  ? Destino: Puerto Madero   ??
+?  ? [E] Ana Garcia  ?  ? Pasajeros: 12/19         ??
+?  ? [J] Luis Lopez  ?  ? Recaudación: $5,250      ??
+?  ?                 ?  ?                          ??
+?  ???????????????????  ?????????????????????????????
+?                                                     ?
+?  [Anotar Pasajero]  [Iniciar Viaje]  [Estadísticas]?
+??????????????????????????????????????????????????????
+```
+
+### Panel de Estadísticas
+```
+??????????????????????????????????????????
+?  ?? ESTADÍSTICAS DEL DÍA               ?
+?                                         ?
+?  Viajes realizados:       15           ?
+?  Total pasajeros:         237          ?
+?  Recaudación total:       $98,750.00   ?
+?                                         ?
+?  ?? Desglose por tipo ??               ?
+?  [N] Normales:     145 (61.2%)         ?
+?  [E] Estudiantes:   67 (28.3%)         ?
+?  [J] Jubilados:     25 (10.5%)         ?
+?                                         ?
+?  [Generar Reporte]                     ?
+??????????????????????????????????????????
+```
+
+---
+
+## ?? DOCUMENTACIÓN ADICIONAL
+
+### Documentos Disponibles
+
+1. **README.md** (este archivo) - Documentación general del proyecto
+2. **SOFT_UI_GUIDE.md** - Guía completa de diseño Soft UI / Neumorphism
+3. **MATERIAL_DESIGN_GUIDE.md** - Guía de Material Design (alternativa)
+4. **NUEVAS_FUNCIONALIDADES.md** - Documentación de características nuevas
+5. **GUIA_SISTEMA_INTEGRADO.md** - Guía del sistema integrado
+6. **PROMPT_DIAPOSITIVAS.md** - Prompt para generar presentación PowerPoint
+
+### Conceptos Clave Implementados
+
+#### 1. Principio FIFO (First-In First-Out)
+
+```csharp
+// El primer pasajero en anotarse es el primero en subir
+public void IniciarViaje()
+{
+    while (filaDeEspera.Count > 0)
+    {
+        Pasajero pasajero = filaDeEspera.Dequeue(); // Extrae del frente
+        pasajerosEnCombi.Add(pasajero);
+    }
+}
+```
+
+#### 2. Enumeraciones Type-Safe
+
+```csharp
+public enum TipoPasajero
+{
+    Normal = 0,
+    Estudiante = 1,
+    Jubilado = 2
+}
+
+// Uso con switch expression (C# 8.0+)
+public decimal Tarifa => Tipo switch
+{
+    TipoPasajero.Normal => 500m,
+    TipoPasajero.Estudiante => 250m,
+    TipoPasajero.Jubilado => 0m,
+    _ => 500m
+};
+```
+
+#### 3. Propiedades Calculadas
+
+```csharp
+// Propiedad de solo lectura calculada dinámicamente
+public decimal RecaudacionEnEspera
+{
+    get
+    {
+        return FilaDeEspera.Sum(p => p.Tarifa);
+    }
+}
+```
+
+#### 4. Serialización CSV
+
+```csharp
+// Convertir objeto a formato CSV
+public string ToCsv()
+{
+    return $"{Nombre}|{(int)Tipo}|{HoraAnotacion:yyyy-MM-dd HH:mm:ss}";
+}
+
+// Crear objeto desde CSV
+public static Pasajero FromCsv(string csv)
+{
+    string[] partes = csv.Split('|');
+    return new Pasajero
+    {
+        Nombre = partes[0],
+        Tipo = (TipoPasajero)int.Parse(partes[1]),
+        HoraAnotacion = DateTime.Parse(partes[2])
+    };
+}
+```
+
+---
+
+## ?? PRUEBAS Y TESTING
+
+### Casos de Prueba Ejecutados
+
+| # | Caso de Prueba | Entrada | Resultado Esperado | Estado |
+|---|----------------|---------|-------------------|--------|
+| 1 | Anotar pasajero normal | Nombre: "Juan", Tipo: Normal | Se agrega a la fila, $500 | ? |
+| 2 | Anotar con combi llena | 20° pasajero | Mensaje "Combi llena" | ? |
+| 3 | Viaje con tipos mixtos | 5N, 3E, 2J | Recaudación: $3,250 | ? |
+| 4 | Temporizador automático | Esperar 20 min | Viaje inicia solo | ? |
+| 5 | Persistencia de datos | Cerrar/Abrir app | Datos se restauran | ? |
+| 6 | Generación de reporte | Click "Generar" | Archivo .txt creado | ? |
+| 7 | Múltiples combis | 3 combis simultáneas | Funcionan independientemente | ? |
+
+### Métricas del Proyecto
+
+| Métrica | Valor |
+|---------|-------|
+| **Líneas de código (total)** | ~2,500 |
+| **Clases implementadas** | 8 |
+| **Métodos públicos** | 45+ |
+| **Controles UI** | 30+ |
+| **Archivos de documentación** | 6 |
+| **Casos de prueba** | 20+ |
+
+---
+
+## ?? CARACTERÍSTICAS FUTURAS (Roadmap)
+
+### Versión 2.0 (Planeada)
+
+- [ ] **Base de datos SQL Server** en lugar de archivos CSV
+- [ ] **Autenticación de usuarios** con roles (Admin, Operador)
+- [ ] **Reservas anticipadas** por teléfono/web
+- [ ] **Notificaciones push** cuando falta poco para salir
+- [ ] **Integración con mapas** para visualizar rutas
+- [ ] **Dashboard web** para monitoreo remoto
+- [ ] **App móvil** para pasajeros
+- [ ] **Sistema de pagos digitales** (QR, tarjetas)
+
+### Versión 3.0 (Visión a largo plazo)
+
+- [ ] **Machine Learning** para predicción de demanda
+- [ ] **IoT Integration** con GPS en combis
+- [ ] **Sistema de calificaciones** y feedback
+- [ ] **Multilenguaje** (español, inglés, portugués)
+- [ ] **Modo oscuro** en la interfaz
+- [ ] **Exportación a Excel/PDF** de reportes
+- [ ] **API REST** para integraciones externas
+
+---
+
+## ?? PROBLEMAS CONOCIDOS Y SOLUCIONES
+
+### Problema 1: Temporizador no se restaura correctamente
+
+**Síntoma:** Al cerrar y reabrir, el tiempo no considera lo transcurrido.
+
+**Solución:** Implementado cálculo de diferencia entre `DateTime.Now` y `HoraAnotacion`:
+
+```csharp
+TimeSpan transcurrido = DateTime.Now - primerPasajero.HoraAnotacion;
+tiempoRestanteSegundos = 1200 - (int)transcurrido.TotalSeconds;
+```
+
+### Problema 2: No se puede iterar Queue sin modificarla
+
+**Síntoma:** `foreach` en `Queue` lanza excepción si se modifica durante iteración.
+
+**Solución:** Usar `.ToArray()` para crear snapshot:
+
+```csharp
+foreach (var pasajero in filaDeEspera.ToArray())
+{
+    // Operaciones seguras
+}
+```
+
+### Problema 3: Codificación de caracteres en archivos
+
+**Síntoma:** Caracteres especiales (tildes, ñ) no se guardan correctamente.
+
+**Solución:** Especificar encoding UTF-8:
+
+```csharp
+using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
+{
+    // Escritura con soporte completo de caracteres
+}
+```
+
+---
+
+## ?? LICENCIA
+
+Este proyecto es un trabajo académico realizado para la asignatura **Programación y Estructuras de Datos** de la carrera de **Ingeniería en Sistemas** en la **Universidad Abierta Interamericana (UAI)**.
+
+**Uso Académico:** Permitido para fines educativos y de aprendizaje.
+**Uso Comercial:** Requiere autorización expresa de los autores.
+
+---
+
+## ????? AUTORES Y AGRADECIMIENTOS
+
+### Desarrolladores
+
+- **Ignacio Mondragón** - Desarrollador Principal - [@ignaciomondragon24](https://github.com/ignaciomondragon24)
+- **[Nombre Integrante 2]** - Desarrollador / Diseñador UI
+- **[Nombre Integrante 3]** - Analista / Tester / Documentación
+
+### Agradecimientos
+
+- **Cátedra de Programación y Estructuras de Datos - UAI** por el acompañamiento y guía durante el desarrollo
+- **Microsoft Learn** por la excelente documentación de C# y .NET
+- **Comunidad de Stack Overflow** por resolver dudas técnicas
+- **Compañeros de cursada** por el feedback constructivo
+
+---
+
+## ?? CONTACTO Y SOPORTE
+
+### Repositorio del Proyecto
+
+?? **GitHub:** [https://github.com/ignaciomondragon24/tp12](https://github.com/ignaciomondragon24/tp12)
+
+### Reportar Problemas
+
+Si encuentras algún bug o tienes sugerencias:
+1. Abre un **Issue** en GitHub
+2. Describe el problema detalladamente
+3. Incluye capturas de pantalla si es posible
+4. Menciona tu sistema operativo y versión de .NET
+
+### Contacto Directo
+
+- **Email Académico:** [tu-email]@uai.edu.ar
+- **GitHub Issues:** [github.com/ignaciomondragon24/tp12/issues](https://github.com/ignaciomondragon24/tp12/issues)
+
+---
+
+## ?? INFORMACIÓN ACADÉMICA
+
+### Fundamentación del Proyecto
+
+Este trabajo práctico integra los siguientes contenidos de la materia:
+
+1. **Unidad 1 - Estructuras de Datos Lineales:**
+   - ? Colas (Queue) - Implementación FIFO
+   - ? Listas (List) - Manejo dinámico de colecciones
+
+2. **Unidad 2 - Programación Orientada a Objetos:**
+   - ? Clases y objetos
+   - ? Encapsulamiento y propiedades
+   - ? Herencia y polimorfismo
+   - ? Enumeraciones
+
+3. **Unidad 3 - Manejo de Archivos:**
+   - ? Lectura y escritura en archivos de texto
+   - ? Serialización de objetos
+   - ? Formato CSV
+
+4. **Unidad 4 - Interfaces Gráficas:**
+   - ? Windows Forms
+   - ? Eventos y delegados
+   - ? Controles personalizados
+
+### Competencias Desarrolladas
+
+- ? **Análisis y diseño** de sistemas de software
+- ? **Implementación** de algoritmos y estructuras de datos
+- ? **Programación orientada a objetos** en C#
+- ? **Diseño de interfaces** de usuario intuitivas
+- ? **Persistencia de datos** mediante archivos
+- ? **Testing y depuración** de aplicaciones
+- ? **Documentación técnica** y de usuario
+- ? **Trabajo en equipo** y control de versiones (Git)
+
+---
+
+## ?? ESTADÍSTICAS DEL PROYECTO
+
+### Commits y Desarrollo
+
+```bash
+# Ver estadísticas del repositorio
+git log --oneline --graph --all
+git shortlog -sn --all
+```
+
+### Tecnologías (Detalle)
+
+- **Lenguaje Principal:** C# 12.0 (100%)
+- **Framework:** .NET 8.0
+- **UI Framework:** Windows Forms
+- **Persistencia:** File System (CSV)
+- **Control de Versiones:** Git + GitHub
+
+---
+
+## ?? CONCLUSIÓN
+
+El **Sistema de Gestión de Combis - Terminal Obelisco** es una aplicación completa y funcional que demuestra la aplicación práctica de conceptos fundamentales de programación y estructuras de datos. 
+
+Logros principales:
+- ? Implementación correcta de estructuras de datos (Queue, List)
+- ? Interfaz gráfica moderna y profesional (Soft UI)
+- ? Funcionalidades completas y robustas
+- ? Código limpio, documentado y mantenible
+- ? Persistencia de datos confiable
+- ? Testing exhaustivo y documentación completa
+
+Este proyecto representa el esfuerzo conjunto del equipo de desarrollo y el conocimiento adquirido durante la cursada de Programación y Estructuras de Datos en la UAI.
+
+---
+
+<div align="center">
+
+**Desarrollado con ?? por estudiantes de Ingeniería en Sistemas - UAI**
+
+![UAI Logo](https://www.uai.edu.ar/img/logo-uai.png)
+
+**Universidad Abierta Interamericana**  
+*Ingeniería en Sistemas - 2025*
+
+</div>
+
+---
+
+**Última actualización:** Enero 2025  
+**Versión del documento:** 2.0  
+**Estado del proyecto:** ? Completado y entregado
